@@ -19,6 +19,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.indentexpr = "v:lua.vim.treesitter.indentexpr()"
 vim.opt.foldtext = ""
 vim.opt.foldlevel = 99
 vim.opt.jumpoptions = "stack"
