@@ -38,7 +38,7 @@
               nvim-treesitter.withAllGrammars
               nvim-surround
               oil-nvim
-              # vim-tmux-navigator
+              vim-tmux-navigator
               blink-indent
               blink-cmp
               blink-pairs
