@@ -28,7 +28,7 @@ in
       networking.hostName = "heatwave-pro";
       vector.proxy-settings.enable = true;
 
-      environment.variables.EDITOR = lib.mkForce "nvr --remote-wait";
+      environment.variables.EDITOR = lib.mkForce "nvim";
       environment.systemPackages = with pkgs; [
         neovim-remote
         distrobox
