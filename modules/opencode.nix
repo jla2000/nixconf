@@ -5,6 +5,10 @@
     {
       environment.systemPackages = [
         self.packages.${pkgs.stdenv.hostPlatform.system}.opencode
+        pkgs.rtk
+
+        # RTK plugin currently needs to be placed manually in ~/.config/opencode/plugins
+        # Install by running `rtk init -g --opencode`
       ];
     };
 
@@ -26,7 +30,8 @@
         settings = {
           "$schema" = "https://opencode.ai/config.json";
           "theme" = "catppuccin";
-          "model" = "copilot/claude-opus-4-6";
+          "disabled_providers" = [ "opencode" ];
+          "model" = "copilot/claude-opus-4-8";
           "instructions" = [
             ".github/instructions/*.md"
             cavemen-instructions
