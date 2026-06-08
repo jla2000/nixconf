@@ -54,7 +54,7 @@
           ];
           config_directory = lib.mkDefault ../neovim-config;
         };
-        extraPackages = with pkgs; [
+        runtimePkgs = with pkgs; [
           lua-language-server
           markdownlint-cli2
           marksman
