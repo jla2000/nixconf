@@ -29,15 +29,33 @@
         inherit pkgs;
         settings = {
           "$schema" = "https://opencode.ai/config.json";
-          "theme" = "catppuccin";
-          "disabled_providers" = [ "opencode" ];
-          "model" = "copilot/claude-opus-4-8";
-          "instructions" = [
+          theme = "catppuccin";
+          disabled_providers = [ "opencode" ];
+          model = "copilot/claude-opus-4-8";
+          instructions = [
             ".github/instructions/*.md"
             cavemen-instructions
           ];
+          provider.ollama = {
+            npm = "@ai-sdk/openai-compatible";
+            name = "vAssistant";
+            options.baseURL = "https://vassistant.vi.vector.int/v1";
+            models."gpt-5" = {
+              name = "GPT-5";
+              limit = {
+                context = 32000;
+                output = 16000;
+              };
+            };
+          };
+          mcp.vassistant = {
+            type = "remote";
+            url = "https://vassistant.vi.vector.int/mcp";
+            oauth = false;
+            headers.Authorization = "Bearer vA-xgv6FQjEs6Xi7annZno5rdGhKzm7mOMC";
+          };
           # Fix until https://github.com/anomalyco/opencode/issues/13533 is resolved
-          "agent"."compaction"."model" = "github-copilot/gpt-5.4";
+          agent.compaction.model = "github-copilot/gpt-5.4";
         };
       };
     };
