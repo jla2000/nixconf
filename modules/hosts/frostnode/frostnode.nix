@@ -7,28 +7,24 @@
   };
 
   flake.nixosModules.frostnode =
-    { pkgs, ... }:
+    { ... }:
     {
       imports = [
         self.nixosModules.common
         self.nixosModules.neovim
         self.nixosModules.git
         self.nixosModules.disk-config
-        self.nixosModules.wireguard
       ];
-
-      nixpkgs.config.permittedInsecurePackages = [
-        "openclaw-2026.3.12"
-      ];
-      environment.systemPackages = [ pkgs.openclaw ];
 
       networking.hostName = "frostnode";
-      services.ollama.enable = true;
+
+      services.tailscale.enable = true;
+      services.fail2ban.enable = true;
       services.openssh = {
         enable = true;
         openFirewall = true;
         settings = {
-          PermitRootLogin = "yes";
+          PermitRootLogin = "no";
           PasswordAuthentication = false;
           X11Forwarding = true;
         };
@@ -57,33 +53,6 @@
         efiSupport = true;
         efiInstallAsRemovable = true;
       };
-
-      services.fail2ban.enable = true;
-      services.sslh = {
-        enable = true;
-        settings.protocols = [
-          # Ssh
-          {
-            name = "ssh";
-            host = "localhost";
-            port = "22";
-            service = "ssh";
-          }
-          # Caddy
-          {
-            name = "tls";
-            host = "localhost";
-            port = "4430";
-          }
-          # Caddy
-          {
-            name = "http";
-            host = "localhost";
-            port = "4430";
-          }
-        ];
-      };
-      networking.firewall.allowedTCPPorts = [ 443 ];
 
       services.getty.autologinUser = "root";
 

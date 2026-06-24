@@ -30,6 +30,7 @@ in
 
       environment.variables.EDITOR = lib.mkForce "nvim";
       environment.systemPackages = with pkgs; [
+        claude-code
         neovim-remote
         distrobox
         github-copilot-cli
@@ -81,6 +82,8 @@ in
         description = "Jan";
         extraGroups = [ "docker" ];
       };
+
+      services.tailscale.enable = true;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
