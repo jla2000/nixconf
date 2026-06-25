@@ -35,6 +35,7 @@ in
         distrobox
         github-copilot-cli
         copilot-language-server
+        inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr
 
         (self.packages.${pkgs.stdenv.hostPlatform.system}.jujutsu.wrap {
           settings.user = {

@@ -18,7 +18,11 @@
 
       networking.hostName = "frostnode";
 
-      services.tailscale.enable = true;
+      services.tailscale = {
+        enable = true;
+        extraSetFlags = [ "--advertise-exit-node" ];
+      };
+
       services.fail2ban.enable = true;
       services.openssh = {
         enable = true;

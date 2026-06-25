@@ -205,44 +205,10 @@ vim.keymap.set("n", "<leader>ql", function()
   require("persistence").load({ last = true })
 end)
 
--- Neovim as terminal multiplexer
-vim.opt.scrollback = 1000000
-vim.opt.path = ".,**"
-
-vim.keymap.set("t", "<C-s>", "<C-\\><C-n>")
-vim.keymap.set("n", "<leader>tc", "<cmd>tabnew | terminal<cr><cmd>startinsert<cr>")
-vim.keymap.set("n", "<leader>tn", "<cmd>tabnew<cr>")
-vim.keymap.set("n", "<leader>td", "<cmd>tabc<cr>")
-vim.keymap.set({ "t", "n", "v", "x", "i" }, "<C-g>", function()
-  -- TODO: get current buffer path and open that in jjui
-  vim.cmd("terminal jjui")
-  vim.cmd("startinsert")
-end)
-
--- TODO: sync with cd
-vim.api.nvim_create_autocmd({ "BufEnter", "TermEnter", "TermLeave" }, {
-  pattern = "term://*",
-  callback = function()
-    local cwd = vim.fn.resolve("/proc/" .. vim.b.terminal_job_pid .. "/cwd")
-    if vim.fn.isdirectory(cwd) == 0 then return end
-    vim.cmd.lcd(cwd)
-  end
-})
-
-vim.api.nvim_create_autocmd({ "TermRequest" }, {
-  callback = function(ev)
-    local pwd, n = string.gsub(ev.data.sequence, '\027]7;file://[^/]*', '')
-    if n <= 0 then return end
-    if vim.fn.isdirectory(pwd) == 0 then return end
-    if vim.api.nvim_get_current_buf() ~= ev.buf then return end
-    vim.cmd.lcd(pwd)
-  end
-})
-
-vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k")
-vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j")
-vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h")
-vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l")
+vim.keymap.set("t", "<C-k>", "<C-w>k")
+vim.keymap.set("t", "<C-j>", "<C-w>j")
+vim.keymap.set("t", "<C-h>", "<C-w>h")
+vim.keymap.set("t", "<C-l>", "<C-w>l")
 
 if vim.g.neovide then
   vim.fn.chdir("~")
