@@ -36,6 +36,11 @@ in
         github-copilot-cli
         copilot-language-server
 
+        qemu
+        bridge-utils
+        unixtools.ifconfig
+        dnsmasq
+
         (self.packages.${pkgs.stdenv.hostPlatform.system}.jujutsu.wrap {
           settings.user = {
             name = "Lafferton, Jan";
@@ -52,6 +57,14 @@ in
           settings.config_directory = "/home/jan/.config/nvim";
         })
       ];
+
+      # Set the suid bit for the qemu-bridge-helper
+      security.wrappers.qemu-bridge-helper = {
+        owner = "root";
+        group = "root";
+        setuid = true;
+        source = "${pkgs.qemu}/libexec/qemu-bridge-helper";
+      };
 
       services.ollama.enable = true;
       services.xserver.videoDrivers = [ "nvidia" ];
@@ -79,6 +92,7 @@ in
       users.users.jan.isNormalUser = true;
 
       virtualisation = {
+        libvirtd.enable = true;
         containers.enable = true;
         podman.enable = true;
       };
