@@ -75,14 +75,13 @@ in
       };
 
       nixpkgs.hostPlatform = "x86_64-linux";
-      virtualisation.docker.enable = true;
 
-      users.users.jan = {
-        isNormalUser = true;
-        description = "Jan";
-        extraGroups = [ "docker" ];
+      users.users.jan.isNormalUser = true;
+
+      virtualisation = {
+        containers.enable = true;
+        podman.enable = true;
       };
-
       services.tailscale.enable = true;
 
       # This value determines the NixOS release from which the default
