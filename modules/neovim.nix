@@ -52,7 +52,7 @@
             "vi"
             "vim"
           ];
-          config_directory = lib.mkDefault ../neovim-config;
+          config_directory = lib.mkDefault ../config/nvim;
         };
         runtimePkgs = with pkgs; [
           lua-language-server

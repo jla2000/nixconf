@@ -19,7 +19,7 @@ in
         "${nixpkgs-vector}/modules/vector/default.nix"
         self.nixosModules.common
         self.nixosModules.wsl
-        self.nixosModules.tmux
+        self.nixosModules.herdr
         self.nixosModules.dev-tools
         self.nixosModules.stylix
         self.nixosModules.opencode
@@ -35,7 +35,6 @@ in
         distrobox
         github-copilot-cli
         copilot-language-server
-        inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr
 
         (self.packages.${pkgs.stdenv.hostPlatform.system}.jujutsu.wrap {
           settings.user = {
