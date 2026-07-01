@@ -48,12 +48,6 @@
               };
             };
           };
-          mcp.vassistant = {
-            type = "remote";
-            url = "https://vassistant.vi.vector.int/mcp";
-            oauth = false;
-            headers.Authorization = "Bearer vA-xgv6FQjEs6Xi7annZno5rdGhKzm7mOMC";
-          };
           # Fix until https://github.com/anomalyco/opencode/issues/13533 is resolved
           agent.compaction.model = "github-copilot/gpt-5.4";
         };

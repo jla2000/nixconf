@@ -11,13 +11,13 @@
     {
       imports = [
         self.nixosModules.common
-        self.nixosModules.tmux
         self.nixosModules.neovim
         self.nixosModules.jujutsu
         self.nixosModules.git
         self.nixosModules.dev-tools
         self.nixosModules.stylix
         self.nixosModules.zephyrus-hardware
+        self.nixosModules.herdr
         self.nixosModules.opencode
         inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
       ];
@@ -34,9 +34,6 @@
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
-      # Use latest kernel.
-      boot.kernelPackages = pkgs.linuxPackages_latest;
-
       networking.hostName = "zephyrus"; # Define your hostname.
       # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -46,24 +43,6 @@
 
       # Enable networking
       networking.networkmanager.enable = true;
-
-      # Set your time zone.
-      time.timeZone = "Europe/Berlin";
-
-      # Select internationalisation properties.
-      i18n.defaultLocale = "en_US.UTF-8";
-
-      i18n.extraLocaleSettings = {
-        LC_ADDRESS = "de_DE.UTF-8";
-        LC_IDENTIFICATION = "de_DE.UTF-8";
-        LC_MEASUREMENT = "de_DE.UTF-8";
-        LC_MONETARY = "de_DE.UTF-8";
-        LC_NAME = "de_DE.UTF-8";
-        LC_NUMERIC = "de_DE.UTF-8";
-        LC_PAPER = "de_DE.UTF-8";
-        LC_TELEPHONE = "de_DE.UTF-8";
-        LC_TIME = "de_DE.UTF-8";
-      };
 
       # Enable the X11 windowing system.
       # You can disable this if you're only using the Wayland session.
@@ -117,9 +96,6 @@
 
       # Install firefox.
       programs.firefox.enable = true;
-
-      # Allow unfree packages
-      nixpkgs.config.allowUnfree = true;
 
       # List packages installed in system profile. To search, run:
       # $ nix search wget

@@ -22,8 +22,26 @@
       # Misc options
       time.timeZone = "Europe/Berlin";
 
+      # Select internationalisation properties.
+      i18n.defaultLocale = "en_US.UTF-8";
+
+      i18n.extraLocaleSettings = {
+        LC_ADDRESS = "de_DE.UTF-8";
+        LC_IDENTIFICATION = "de_DE.UTF-8";
+        LC_MEASUREMENT = "de_DE.UTF-8";
+        LC_MONETARY = "de_DE.UTF-8";
+        LC_NAME = "de_DE.UTF-8";
+        LC_NUMERIC = "de_DE.UTF-8";
+        LC_PAPER = "de_DE.UTF-8";
+        LC_TELEPHONE = "de_DE.UTF-8";
+        LC_TIME = "de_DE.UTF-8";
+      };
+
       # Allow running non-nix binaries
       programs.nix-ld.enable = true;
+
+      # Use latest kernel.
+      boot.kernelPackages = pkgs.linuxPackages_latest;
 
       environment.variables.EDITOR = "nvim";
 
@@ -60,7 +78,7 @@
       programs.fish = {
         enable = true;
         interactiveShellInit = /* fish */ ''
-          fish_vi_key_bindings
+          fish_hybrid_key_bindings
         '';
       };
 
