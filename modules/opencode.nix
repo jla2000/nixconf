@@ -36,20 +36,6 @@
             ".github/instructions/*.md"
             cavemen-instructions
           ];
-          provider.ollama = {
-            npm = "@ai-sdk/openai-compatible";
-            name = "vAssistant";
-            options.baseURL = "https://vassistant.vi.vector.int/v1";
-            models."gpt-5" = {
-              name = "GPT-5";
-              limit = {
-                context = 32000;
-                output = 16000;
-              };
-            };
-          };
-          # Fix until https://github.com/anomalyco/opencode/issues/13533 is resolved
-          agent.compaction.model = "github-copilot/gpt-5.4";
         };
       };
     };
