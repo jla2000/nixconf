@@ -28,10 +28,8 @@ in
       networking.hostName = "heatwave-pro";
       vector.proxy-settings.enable = true;
 
-      environment.variables.EDITOR = lib.mkForce "nvim";
       environment.systemPackages = with pkgs; [
         claude-code
-        neovim-remote
         distrobox
         github-copilot-cli
         copilot-language-server

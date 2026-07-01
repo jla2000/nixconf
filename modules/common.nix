@@ -61,13 +61,6 @@
         enable = true;
         interactiveShellInit = /* fish */ ''
           fish_vi_key_bindings
-
-          function cd --wraps=cd
-            builtin cd $argv
-            or return
-
-            printf "\033]7;file://%s\033\\" "$PWD"
-          end
         '';
       };
 
