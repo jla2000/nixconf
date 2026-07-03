@@ -30,6 +30,7 @@
         settings = {
           "$schema" = "https://opencode.ai/config.json";
           theme = "catppuccin";
+          lsp = true;
           disabled_providers = [ "opencode" ];
           model = "copilot/claude-opus-4-8";
           instructions = [
