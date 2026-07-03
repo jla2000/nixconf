@@ -20,9 +20,11 @@ in
         self.nixosModules.common
         self.nixosModules.wsl
         self.nixosModules.herdr
+        self.nixosModules.tmux
         self.nixosModules.dev-tools
         self.nixosModules.stylix
         self.nixosModules.opencode
+        self.nixosModules.helix
       ];
 
       networking.hostName = "heatwave-pro";
