@@ -63,6 +63,7 @@ vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("zls")
 vim.lsp.enable("taplo")
 vim.lsp.enable("marksman")
+vim.lsp.enable("cfu")
 
 vim.lsp.config("lua_ls", {
   settings = {
@@ -71,6 +72,11 @@ vim.lsp.config("lua_ls", {
       workspace = { library = { vim.env.VIMRUNTIME } },
     },
   },
+})
+
+vim.lsp.config("cfu", {
+  cmd = { "cfu", "lsp", "--stdio" },
+  filetypes = { "json5" },
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
