@@ -85,6 +85,12 @@
         '';
       };
 
+      fonts.packages = with pkgs; [
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.monaspace
+        noto-fonts-color-emoji
+      ];
+
       environment.systemPackages = with pkgs; [
         uutils-coreutils-noprefix
         eza
