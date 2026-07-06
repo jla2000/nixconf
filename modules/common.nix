@@ -61,10 +61,7 @@
         };
       };
 
-      programs.zoxide = {
-        enable = true;
-        enableFishIntegration = true;
-      };
+      programs.zoxide.enable = true;
 
       programs.bash = {
         enable = true;
@@ -74,13 +71,6 @@
         interactiveShellInit = /* bash */ ''
           enable -f ${self.packages.${pkgs.stdenv.system}.flyline}/lib/libflyline.so flyline
           set -o vi
-        '';
-      };
-
-      programs.fish = {
-        enable = true;
-        interactiveShellInit = /* fish */ ''
-          fish_hybrid_key_bindings
         '';
       };
 
@@ -102,9 +92,6 @@
         man-pages
         man-pages-posix
         python3
-        fishPlugins.bass
-        fishPlugins.autopair
-        fishPlugins.fzf
       ];
     };
 }
