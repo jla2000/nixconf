@@ -68,11 +68,10 @@
 
       programs.bash = {
         enable = true;
-        completion.enable = true;
-        promptInit = ''
+        promptInit = /* bash */ ''
           PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$ "
         '';
-        shellInit = /* bash */ ''
+        interactiveShellInit = /* bash */ ''
           enable -f ${self.packages.${pkgs.stdenv.system}.flyline}/lib/libflyline.so flyline
           set -o vi
         '';
