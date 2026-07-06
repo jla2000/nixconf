@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 {
   # flake-parts perSystem provides its own pkgs (bare legacyPackages) which
   # does not inherit the NixOS nixpkgs.config.allowUnfree setting. Without
@@ -69,8 +69,11 @@
       programs.bash = {
         enable = true;
         completion.enable = true;
+        promptInit = ''
+          PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$ "
+        '';
         shellInit = /* bash */ ''
-          bind 'TAB:menu-complete'
+          enable -f ${self.packages.${pkgs.stdenv.system}.flyline}/lib/libflyline.so flyline
           set -o vi
         '';
       };
@@ -98,7 +101,5 @@
         fishPlugins.autopair
         fishPlugins.fzf
       ];
-
-      users.defaultUserShell = pkgs.fish;
     };
 }

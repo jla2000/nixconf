@@ -18,7 +18,6 @@
         mouse = true;
         escapeTime = 10;
         terminal = "tmux-256color";
-        shell = "${pkgs.fish}/bin/fish";
         plugins = with pkgs.tmuxPlugins; [
           vim-tmux-navigator
           fingers
