@@ -170,6 +170,7 @@ vim.keymap.set({ "n", "x" }, "<leader>av", function() require("sidekick.cli").se
 vim.keymap.set({ "n", "x" }, "<leader>ap", function() require("sidekick.cli").prompt() end)
 
 require("fzf-lua").setup({
+  "telescope",
   keymap = {
     fzf = {
       ["ctrl-q"] = "select-all+accept"
