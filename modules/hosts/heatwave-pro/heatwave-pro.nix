@@ -18,6 +18,7 @@ in
       imports = [
         "${nixpkgs-vector}/modules/vector/default.nix"
         self.nixosModules.common
+        self.nixosModules.alacritty
         self.nixosModules.wsl
         self.nixosModules.herdr
         self.nixosModules.tmux
