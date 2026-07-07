@@ -31,6 +31,7 @@
             blink-pairs
             sidekick-nvim
             persistence-nvim
+            gruvbox-nvim
           ];
         };
         settings = {
