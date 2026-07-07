@@ -1,14 +1,27 @@
 { inputs, ... }:
 {
   flake.nixosModules.stylix =
-    { pkgs, ... }:
     {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    {
+      options.stylix.colorscheme = lib.mkOption {
+        type = lib.types.str;
+        default = "gruvbox-light";
+        description = "Base16 colorscheme to use with Stylix";
+      };
+
       imports = [ inputs.stylix.nixosModules.stylix ];
 
-      stylix = {
-        enable = true;
-        base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-light.yaml";
-        targets.console.enable = false;
+      config = {
+        stylix = {
+          enable = true;
+          base16Scheme = "${pkgs.base16-schemes}/share/themes/${config.stylix.colorscheme}.yaml";
+          targets.console.enable = false;
+        };
       };
     };
 }

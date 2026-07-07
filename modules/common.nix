@@ -77,8 +77,8 @@
           RPS1='$(jj_bookmark)'
         '';
         interactiveShellInit = /* bash */ ''
+          eval $(${pkgs.starship}/bin/starship init bash)
           enable -f ${self.packages.${pkgs.stdenv.system}.flyline}/lib/libflyline.so flyline
-          flyline set-agent-mode --system-prompt "Be concise. Answer with a JSON array of at most 3 items with objects containing: command  (master) and description. Command will be a Bash command." --trigger-prefix ': ' --command 'claude --effort low --print'
           set -o vi
         '';
       };

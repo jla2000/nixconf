@@ -11,16 +11,18 @@
     {
       imports = [
         self.nixosModules.common
-        self.nixosModules.neovim
         self.nixosModules.jujutsu
         self.nixosModules.git
         self.nixosModules.dev-tools
         self.nixosModules.stylix
         self.nixosModules.zephyrus-hardware
         self.nixosModules.herdr
+        self.nixosModules.tmux
         self.nixosModules.opencode
         inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
       ];
+
+      stylix.colorscheme = "catppuccin-mocha";
 
       hardware.bluetooth.enable = true;
 
@@ -91,6 +93,10 @@
         #  wget
         ghostty
         zed-editor
+        distrobox
+        (self.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap {
+          settings.config_directory = "/home/jan/.config/nvim";
+        })
       ];
 
       virtualisation = {

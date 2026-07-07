@@ -57,8 +57,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 require("vim._core.ui2").enable({})
 
-vim.opt.background = "light"
-vim.cmd.colorscheme("gruvbox")
+vim.cmd.colorscheme("catppuccin")
 
 vim.lsp.enable("nixd")
 vim.lsp.enable("lua_ls")
