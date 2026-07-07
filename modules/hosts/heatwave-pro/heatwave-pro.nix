@@ -96,7 +96,10 @@ in
       virtualisation = {
         libvirtd.enable = true;
         containers.enable = true;
-        podman.enable = true;
+        podman = {
+          enable = true;
+          dockerCompat = true;
+        };
       };
       services.tailscale.enable = true;
 
