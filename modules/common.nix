@@ -65,11 +65,20 @@
 
       programs.bash = {
         enable = true;
+        completion.enable = true;
         promptInit = /* bash */ ''
-          PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$ "
+          jj_bookmark() {
+            jj root &>/dev/null || return
+            local bm
+            bm=$(jj log -r 'heads(::@ & bookmarks())' --no-graph -T 'bookmarks')
+            [[ -n "$bm" ]] && echo " ($bm)"
+          }
+          PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$ '
+          RPS1='$(jj_bookmark)'
         '';
         interactiveShellInit = /* bash */ ''
           enable -f ${self.packages.${pkgs.stdenv.system}.flyline}/lib/libflyline.so flyline
+          flyline set-agent-mode --system-prompt "Be concise. Answer with a JSON array of at most 3 items with objects containing: command  (master) and description. Command will be a Bash command." --trigger-prefix ': ' --command 'claude --effort low --print'
           set -o vi
         '';
       };

@@ -35,6 +35,7 @@ in
         distrobox
         github-copilot-cli
         copilot-language-server
+        nodejs
 
         qemu
         bridge-utils
