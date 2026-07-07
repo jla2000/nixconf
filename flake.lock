@@ -229,26 +229,6 @@
         "type": "github"
       }
     },
-    "herdr": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1783343981,
-        "narHash": "sha256-ThzqtX8hInDEhmJdagL55qLQ+DfLpxq2wSCaO8YBUjk=",
-        "owner": "ogulcancelik",
-        "repo": "herdr",
-        "rev": "cdfb75da4433bca1a5c54600628b72b5ac2e6a63",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ogulcancelik",
-        "repo": "herdr",
-        "type": "github"
-      }
-    },
     "import-tree": {
       "locked": {
         "lastModified": 1778781969,
@@ -417,7 +397,6 @@
         "disko": "disko",
         "flake-parts": "flake-parts",
         "git-hooks": "git-hooks",
-        "herdr": "herdr",
         "import-tree": "import-tree",
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",

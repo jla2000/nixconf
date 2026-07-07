@@ -13,7 +13,7 @@
         { ... }:
         {
           inherit pkgs;
-          package = inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
+          package = pkgs.herdr;
           env.HERDR_CONFIG_PATH = ../config/herdr/config.toml;
         }
       );

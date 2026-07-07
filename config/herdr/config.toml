@@ -10,7 +10,7 @@ onboarding = false
 # Built-in themes: catppuccin, terminal, tokyo-night, dracula, nord,
 #                  gruvbox, one-dark, solarized, kanagawa, rose-pine,
 #                  vesper
-# name = "catppuccin"
+name = "catppuccin-mocha"
 
 # Follow host terminal light/dark appearance and switch Herdr UI themes.
 # Existing manual behavior is unchanged unless this is true.
@@ -25,7 +25,6 @@ onboarding = false
 # accent = "#f5c2e7"
 # red = "#ff6188"
 # green = "#a6e3a1"
-name = "catppuccin"
 
 [terminal]
 # Executable used for new interactive panes.
@@ -177,13 +176,13 @@ description = "run jjui"
 
 # Ask for a tab name before creating a new tab.
 # Set false to create tabs immediately with generated names.
-# prompt_new_tab_name = true
+prompt_new_tab_name = false
 
 # Draw borders around split panes.
 # pane_borders = true
 
 # Keep split panes visually separated instead of sharing divider borders.
-# pane_gaps = true
+pane_gaps = false
 
 # Show detected/reported agent labels in split pane borders when no manual pane name is set.
 # show_agent_labels_on_pane_borders = false
