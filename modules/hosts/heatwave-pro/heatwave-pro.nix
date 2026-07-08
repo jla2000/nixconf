@@ -31,6 +31,8 @@ in
       networking.hostName = "heatwave-pro";
       vector.proxy-settings.enable = true;
 
+      stylix.colorscheme = "catppuccin-latte";
+
       environment.systemPackages = with pkgs; [
         claude-code
         distrobox

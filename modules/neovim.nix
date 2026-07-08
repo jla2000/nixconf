@@ -32,6 +32,7 @@
             sidekick-nvim
             persistence-nvim
             gruvbox-nvim
+            catppuccin-nvim
           ];
         };
         settings = {
