@@ -105,6 +105,12 @@
         podman.enable = true;
       };
 
+      fonts.packages = with pkgs; [
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.monaspace
+        noto-fonts-color-emoji
+      ];
+
       # Some programs need SUID wrappers, can be configured further or are
       # started in user sessions.
       # programs.mtr.enable = true;
