@@ -39,6 +39,7 @@ in
         github-copilot-cli
         copilot-language-server
         nodejs
+        gh
 
         qemu
         bridge-utils
