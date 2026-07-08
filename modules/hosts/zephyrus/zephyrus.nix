@@ -19,6 +19,7 @@
         self.nixosModules.herdr
         self.nixosModules.tmux
         self.nixosModules.opencode
+        self.nixosModules.flyline
         inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
       ];
 

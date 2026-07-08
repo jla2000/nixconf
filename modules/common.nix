@@ -63,36 +63,13 @@
 
       programs.zoxide.enable = true;
 
-      programs.bash =
-        let
-          jj-bookmark-widget = pkgs.writeShellScript "jj-bookmark-widget" /* bash */ ''
-            bm=$(jj log -r 'heads(::@ & bookmarks())' --no-graph -T bookmarks 2>/dev/null) || exit 0
-            [ -n "$bm" ] && echo "$bm"
-            exit 0
-          '';
-        in
-        {
-          enable = true;
-          completion.enable = true;
-          promptInit = /* bash */ ''
-            PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$ '
-            RPS1='\e[01;35mJJ_BOOKMARK\e[00m'
-          '';
-          interactiveShellInit = /* bash */ ''
-            enable -f ${self.packages.${pkgs.stdenv.system}.flyline}/lib/libflyline.so flyline
-
-            flyline set-agent-mode \
-              --system-prompt "Be concise. Answer with a JSON array of at most 3 items with objects containing: command and description. Command will be a Bash command." \
-              --trigger-prefix ': ' \
-              --command 'claude --effort low --print'
-
-            flyline create-prompt-widget custom --name JJ_BOOKMARK \
-              --command ${jj-bookmark-widget} \
-              --block 500 --placeholder prev
-
-            set -o vi
-          '';
-        };
+      programs.bash = {
+        enable = true;
+        completion.enable = true;
+        interactiveShellInit = /* bash */ ''
+          set -o vi
+        '';
+      };
 
       environment.systemPackages = with pkgs; [
         uutils-coreutils-noprefix

@@ -26,6 +26,7 @@ in
         self.nixosModules.stylix
         self.nixosModules.opencode
         self.nixosModules.helix
+        self.nixosModules.flyline
       ];
 
       networking.hostName = "heatwave-pro";
