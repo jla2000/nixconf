@@ -69,7 +69,11 @@
         ghostty
         zed-editor
         distrobox
+        code-cursor
+        claude-code
+        openspec
         self.packages.${pkgs.stdenv.hostPlatform.system}.neovim-dev
+        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop
       ];
 
       virtualisation = {
