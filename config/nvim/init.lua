@@ -26,11 +26,13 @@ vim.opt.grepprg = "rg --vimgrep --hidden -g '!.git/*'"
 vim.opt.termguicolors = true
 -- vim.opt.timeoutlen = 300
 
-vim.cmd.packadd "cfilter"
-vim.cmd.packadd "nvim.undotree"
+vim.cmd.packadd("cfilter")
+vim.cmd.packadd("nvim.undotree")
 
 local on_jump = function(diagnostic, bufnr)
-  if not diagnostic then return end
+  if not diagnostic then
+    return
+  end
   vim.diagnostic.show(diagnostic.namespace, bufnr, { diagnostic }, {
     virtual_lines = { current_line = true },
   })
@@ -52,7 +54,7 @@ vim.keymap.set("v", "<", "<gv")
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank()
-  end
+  end,
 })
 
 require("vim._core.ui2").enable({})
@@ -105,7 +107,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         buffer = args.buf,
         callback = function()
           vim.lsp.buf.format({ async = false, bufnr = args.buf })
-        end
+        end,
       })
     end
   end,
@@ -119,7 +121,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 require("treesitter-context").setup({
-  max_lines = 2
+  max_lines = 2,
 })
 
 require("nvim-treesitter-textobjects").setup({
@@ -129,7 +131,9 @@ require("nvim-treesitter-textobjects").setup({
 
 -- Select
 local select = function(object)
-  return function() require("nvim-treesitter-textobjects.select").select_textobject(object, "textobjects") end
+  return function()
+    require("nvim-treesitter-textobjects.select").select_textobject(object, "textobjects")
+  end
 end
 vim.keymap.set({ "x", "o" }, "af", select("@function.outer"))
 vim.keymap.set({ "x", "o" }, "if", select("@function.inner"))
@@ -144,14 +148,18 @@ vim.keymap.set("n", "<leader>a", function()
 end)
 
 -- Move
-vim.keymap.set({ "n", "x", "o" }, "]f",
-  function() require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects") end)
-vim.keymap.set({ "n", "x", "o" }, "[f",
-  function() require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects") end)
-vim.keymap.set({ "n", "x", "o" }, "]a",
-  function() require("nvim-treesitter-textobjects.move").goto_next_start("@parameter.outer", "textobjects") end)
-vim.keymap.set({ "n", "x", "o" }, "[a",
-  function() require("nvim-treesitter-textobjects.move").goto_previous_start("@parameter.outer", "textobjects") end)
+vim.keymap.set({ "n", "x", "o" }, "]f", function()
+  require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
+end)
+vim.keymap.set({ "n", "x", "o" }, "[f", function()
+  require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects")
+end)
+vim.keymap.set({ "n", "x", "o" }, "]a", function()
+  require("nvim-treesitter-textobjects.move").goto_next_start("@parameter.outer", "textobjects")
+end)
+vim.keymap.set({ "n", "x", "o" }, "[a", function()
+  require("nvim-treesitter-textobjects.move").goto_previous_start("@parameter.outer", "textobjects")
+end)
 
 require("oil").setup({
   default_file_explorer = true,
@@ -160,22 +168,36 @@ require("oil").setup({
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
 require("flash").setup()
-vim.keymap.set({ "n", "x", "o" }, "s", function() require("flash").jump() end)
+vim.keymap.set({ "n", "x", "o" }, "s", function()
+  require("flash").jump()
+end)
 
 require("sidekick").setup({})
-vim.keymap.set({ "n", "x" }, "<leader>aa", function() require("sidekick.cli").toggle() end)
-vim.keymap.set({ "n", "x" }, "<leader>ad", function() require("sidekick.cli").close() end)
-vim.keymap.set({ "n", "x" }, "<leader>at", function() require("sidekick.cli").send({ msg = "{this}" }) end)
-vim.keymap.set({ "n", "x" }, "<leader>af", function() require("sidekick.cli").send({ msg = "{file}" }) end)
-vim.keymap.set({ "n", "x" }, "<leader>av", function() require("sidekick.cli").send({ msg = "{selection}" }) end)
-vim.keymap.set({ "n", "x" }, "<leader>ap", function() require("sidekick.cli").prompt() end)
+vim.keymap.set({ "n", "x" }, "<leader>aa", function()
+  require("sidekick.cli").toggle()
+end)
+vim.keymap.set({ "n", "x" }, "<leader>ad", function()
+  require("sidekick.cli").close()
+end)
+vim.keymap.set({ "n", "x" }, "<leader>at", function()
+  require("sidekick.cli").send({ msg = "{this}" })
+end)
+vim.keymap.set({ "n", "x" }, "<leader>af", function()
+  require("sidekick.cli").send({ msg = "{file}" })
+end)
+vim.keymap.set({ "n", "x" }, "<leader>av", function()
+  require("sidekick.cli").send({ msg = "{selection}" })
+end)
+vim.keymap.set({ "n", "x" }, "<leader>ap", function()
+  require("sidekick.cli").prompt()
+end)
 
 require("fzf-lua").setup({
   "telescope",
   keymap = {
     fzf = {
-      ["ctrl-q"] = "select-all+accept"
-    }
+      ["ctrl-q"] = "select-all+accept",
+    },
   },
   buffers = {
     actions = {
@@ -187,20 +209,44 @@ require("fzf-lua").setup({
 })
 
 require("live-rename").setup()
-vim.keymap.set("n", "grn", function() require("live-rename").rename() end)
+vim.keymap.set("n", "grn", function()
+  require("live-rename").rename()
+end)
 
 require("fzf-lua").register_ui_select()
-vim.keymap.set("n", "<leader>ff", function() require("fzf-lua").files() end)
-vim.keymap.set("n", "<leader>fr", function() require("fzf-lua").oldfiles() end)
-vim.keymap.set("n", "<leader>fb", function() require("fzf-lua").buffers() end)
-vim.keymap.set("n", "<leader>sg", function() require("fzf-lua").live_grep({ hidden = true }) end)
-vim.keymap.set("n", "<leader>ss", function() require("fzf-lua").lsp_document_symbols() end)
-vim.keymap.set("n", "<leader>sS", function() require("fzf-lua").lsp_live_workspace_symbols() end)
-vim.keymap.set("n", "<leader>sR", function() require("fzf-lua").resume() end)
-vim.keymap.set("n", "<leader>d", function() require("fzf-lua").lsp_workspace_diagnostics() end)
-vim.keymap.set("n", "grr", function() require("fzf-lua").lsp_references() end)
-vim.keymap.set("n", "gra", function() require("fzf-lua").lsp_code_actions() end)
-vim.keymap.set("n", "gd", function() require("fzf-lua").lsp_definitions() end)
+vim.keymap.set("n", "<leader>ff", function()
+  require("fzf-lua").files()
+end)
+vim.keymap.set("n", "<leader>fr", function()
+  require("fzf-lua").oldfiles()
+end)
+vim.keymap.set("n", "<leader>fb", function()
+  require("fzf-lua").buffers()
+end)
+vim.keymap.set("n", "<leader>sg", function()
+  require("fzf-lua").live_grep({ hidden = true })
+end)
+vim.keymap.set("n", "<leader>ss", function()
+  require("fzf-lua").lsp_document_symbols()
+end)
+vim.keymap.set("n", "<leader>sS", function()
+  require("fzf-lua").lsp_live_workspace_symbols()
+end)
+vim.keymap.set("n", "<leader>sR", function()
+  require("fzf-lua").resume()
+end)
+vim.keymap.set("n", "<leader>d", function()
+  require("fzf-lua").lsp_workspace_diagnostics()
+end)
+vim.keymap.set("n", "grr", function()
+  require("fzf-lua").lsp_references()
+end)
+vim.keymap.set("n", "gra", function()
+  require("fzf-lua").lsp_code_actions()
+end)
+vim.keymap.set("n", "gd", function()
+  require("fzf-lua").lsp_definitions()
+end)
 
 require("blink.cmp").setup({})
 require("blink.pairs").setup({ highlights = { enabled = false } })

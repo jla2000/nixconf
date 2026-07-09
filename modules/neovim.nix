@@ -10,8 +10,19 @@
     };
 
   perSystem =
-    { pkgs, lib, ... }:
     {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    {
+      # Same wrapper but reading the mutable config in the home directory,
+      # for hosts where the nvim config is edited in place.
+      packages.neovim-dev = config.packages.neovim.wrap {
+        settings.config_directory = "/home/jan/.config/nvim";
+      };
+
       packages.neovim = inputs.wrapper-modules.wrappers.neovim.wrap {
         inherit pkgs;
         specs = {
