@@ -269,11 +269,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1783370751,
-        "narHash": "sha256-E+3MIMvKuo9k+K+qLQ9YXzsBzkgHuyVLnsEbN2DFfuc=",
+        "lastModified": 1783582157,
+        "narHash": "sha256-EteIu2AVVbxzkBnBKjrbdknbpjxBkWTMNg02rXj4mgU=",
         "owner": "nixos",
         "repo": "nixos-hardware",
-        "rev": "662bd6e312d2c8b212e32cb377abaee190749320",
+        "rev": "968980fba2c290b5529025636474eae8457b854c",
         "type": "github"
       },
       "original": {
@@ -379,11 +379,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783409646,
-        "narHash": "sha256-67aeUrxZ9UQxU4n1GD3UXiVePPXkojMdCh5PQ1O9XJM=",
+        "lastModified": 1783498981,
+        "narHash": "sha256-X+3L+dhe9216kq/0AoCOBedL4zhAwjW8xiTKvZyng8Q=",
         "ref": "refs/heads/master",
-        "rev": "ead3b00afdf603bb6d4c30fc9c9f582d8f712168",
-        "revCount": 827,
+        "rev": "25eb04fb06c09bbdef91664f044ad22195862700",
+        "revCount": 828,
         "type": "git",
         "url": "https://git.outfoxxed.me/quickshell/quickshell"
       },
