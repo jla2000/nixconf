@@ -32,6 +32,10 @@
       url = "github:NousResearch/hermes-agent/fac85518fc8c6a5095f05184016f21294934abb1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
