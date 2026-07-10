@@ -59,7 +59,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 require("vim._core.ui2").enable({})
 
-vim.cmd.colorscheme("catppuccin-macchiato")
+vim.cmd.colorscheme(vim.env.NVIM_COLORSCHEME or "catppuccin-latte")
 
 vim.lsp.enable("nixd")
 vim.lsp.enable("lua_ls")

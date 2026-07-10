@@ -18,14 +18,17 @@
         '';
       };
 
-      # Deliver the wrapper-modules neovim directly. Routing it through
-      # `programs.neovim` makes nixpkgs re-wrap it and discard the
-      # wrapper-modules config (config_directory, aliases, runtimePkgs).
-      config.environment.systemPackages = [
-        (self.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap {
-          settings.config_directory = config.profile.neovim.configDirectory;
-        })
-      ];
+      config = {
+        # Deliver the wrapper-modules neovim directly. Routing it through
+        # `programs.neovim` makes nixpkgs re-wrap it and discard the
+        # wrapper-modules config (config_directory, aliases, runtimePkgs).
+        environment.systemPackages = [
+          (self.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap {
+            settings.config_directory = config.profile.neovim.configDirectory;
+          })
+        ];
+        environment.variables.NVIM_COLORSCHEME = config.stylix.colorscheme;
+      };
     };
 
   perSystem =
