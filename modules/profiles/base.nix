@@ -29,18 +29,26 @@
         };
       };
 
-      config.virtualisation = {
-        libvirtd.enable = true;
-        containers.enable = true;
-        podman.enable = true;
-      };
+      config = {
+        virtualisation = {
+          libvirtd.enable = true;
+          containers.enable = true;
+          podman = {
+            enable = true;
+            dockerCompat = true;
+          };
+        };
 
-      config.environment.systemPackages = [ pkgs.claude-code ];
+        environment.systemPackages = [
+          pkgs.claude-code
+          pkgs.distrobox
+        ];
 
-      config.users.users.jan = {
-        isNormalUser = true;
-        description = "Jan";
-        extraGroups = [ "wheel" ];
+        users.users.jan = {
+          isNormalUser = true;
+          description = "Jan";
+          extraGroups = [ "wheel" ];
+        };
       };
     };
 }

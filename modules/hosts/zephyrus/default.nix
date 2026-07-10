@@ -33,7 +33,6 @@
       environment.systemPackages = with pkgs; [
         ghostty
         zed-editor
-        distrobox
         code-cursor
         openspec
         inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop

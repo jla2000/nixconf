@@ -35,11 +35,7 @@ in
       stylix.colorscheme = "catppuccin-latte";
 
       environment.systemPackages = with pkgs; [
-        distrobox
-        github-copilot-cli
-        copilot-language-server
         nodejs
-
         qemu
         bridge-utils
         unixtools.ifconfig
@@ -76,8 +72,6 @@ in
       };
 
       nixpkgs.hostPlatform = "x86_64-linux";
-
-      virtualisation.podman.dockerCompat = true;
 
       system.stateVersion = "24.05";
     };
