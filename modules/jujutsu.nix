@@ -1,10 +1,12 @@
 { self, inputs, ... }:
 {
   flake.nixosModules.jujutsu =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     {
       environment.systemPackages = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.jujutsu
+        (self.packages.${pkgs.stdenv.hostPlatform.system}.jujutsu.wrap {
+          settings.user = { inherit (config.profile.identity) name email; };
+        })
       ];
     };
 

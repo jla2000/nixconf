@@ -17,17 +17,17 @@ in
     {
       imports = [
         "${nixpkgs-vector}/modules/vector/default.nix"
-        self.nixosModules.common
+        self.nixosModules.base
         self.nixosModules.alacritty
         self.nixosModules.wsl
-        self.nixosModules.herdr
-        self.nixosModules.tmux
-        self.nixosModules.dev-tools
-        self.nixosModules.stylix
-        self.nixosModules.opencode
         self.nixosModules.helix
-        self.nixosModules.flyline
       ];
+
+      profile.identity = {
+        name = "Lafferton, Jan";
+        email = "jan.lafferton@vector.com";
+      };
+      profile.neovim.configDirectory = "/home/jan/.config/nvim";
 
       networking.hostName = "heatwave-pro";
       vector.proxy-settings.enable = true;
@@ -35,7 +35,6 @@ in
       stylix.colorscheme = "catppuccin-latte";
 
       environment.systemPackages = with pkgs; [
-        claude-code
         distrobox
         github-copilot-cli
         copilot-language-server
@@ -45,20 +44,6 @@ in
         bridge-utils
         unixtools.ifconfig
         dnsmasq
-
-        (self.packages.${pkgs.stdenv.hostPlatform.system}.jujutsu.wrap {
-          settings.user = {
-            name = "Lafferton, Jan";
-            email = "jan.lafferton@vector.com";
-          };
-        })
-        (self.packages.${pkgs.stdenv.hostPlatform.system}.git.wrap {
-          settings.user = {
-            name = "Lafferton, Jan";
-            email = "jan.lafferton@vector.com";
-          };
-        })
-        self.packages.${pkgs.stdenv.hostPlatform.system}.neovim-dev
       ];
 
       # Set the suid bit for the qemu-bridge-helper
@@ -92,16 +77,7 @@ in
 
       nixpkgs.hostPlatform = "x86_64-linux";
 
-      users.users.jan.isNormalUser = true;
-
-      virtualisation = {
-        libvirtd.enable = true;
-        containers.enable = true;
-        podman = {
-          enable = true;
-          dockerCompat = true;
-        };
-      };
+      virtualisation.podman.dockerCompat = true;
 
       system.stateVersion = "24.05";
     };

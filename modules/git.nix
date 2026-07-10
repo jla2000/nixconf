@@ -1,11 +1,13 @@
 { self, inputs, ... }:
 {
   flake.nixosModules.git =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     {
       programs.git = {
         enable = true;
-        package = self.packages.${pkgs.stdenv.hostPlatform.system}.git;
+        package = self.packages.${pkgs.stdenv.hostPlatform.system}.git.wrap {
+          settings.user = { inherit (config.profile.identity) name email; };
+        };
       };
     };
 

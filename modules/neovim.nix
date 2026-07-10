@@ -1,15 +1,6 @@
 { self, inputs, ... }:
 {
   flake.nixosModules.neovim =
-    { pkgs, ... }:
-    {
-      programs.neovim = {
-        enable = true;
-        package = self.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
-      };
-    };
-
-  perSystem =
     {
       pkgs,
       lib,
@@ -17,12 +8,33 @@
       ...
     }:
     {
-      # Same wrapper but reading the mutable config in the home directory,
-      # for hosts where the nvim config is edited in place.
-      packages.neovim-dev = config.packages.neovim.wrap {
-        settings.config_directory = "/home/jan/.config/nvim";
+      options.profile.neovim.configDirectory = lib.mkOption {
+        type = lib.types.either lib.types.path lib.types.str;
+        default = ../config/nvim;
+        description = ''
+          Neovim config directory. A path is copied into the store
+          (reproducible); a string path is read live at runtime (mutable, for
+          editing the config in place).
+        '';
       };
 
+      # Deliver the wrapper-modules neovim directly. Routing it through
+      # `programs.neovim` makes nixpkgs re-wrap it and discard the
+      # wrapper-modules config (config_directory, aliases, runtimePkgs).
+      config.environment.systemPackages = [
+        (self.packages.${pkgs.stdenv.hostPlatform.system}.neovim.wrap {
+          settings.config_directory = config.profile.neovim.configDirectory;
+        })
+      ];
+    };
+
+  perSystem =
+    {
+      pkgs,
+      lib,
+      ...
+    }:
+    {
       packages.neovim = inputs.wrapper-modules.wrappers.neovim.wrap {
         inherit pkgs;
         specs = {
