@@ -59,6 +59,20 @@
             persistence-nvim
             gruvbox-nvim
             catppuccin-nvim
+            (pkgs.vimUtils.buildVimPlugin {
+              pname = "fzf-oil-nvim";
+              version = "unstable-2026-07-15";
+              src = pkgs.fetchFromGitHub {
+                owner = "ingur";
+                repo = "fzf-oil.nvim";
+                rev = "bc20b4d0d3531c9af93247158f89872bf1cea46b";
+                hash = "sha256-XIpSCYjIckz4yZPQWmU60yG9+CcvmaODfLtwkkn4Y8w=";
+              };
+              dependencies = with pkgs.vimPlugins; [
+                fzf-lua
+                oil-nvim
+              ];
+            })
           ];
         };
         settings = {

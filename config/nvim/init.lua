@@ -164,8 +164,9 @@ end)
 require("oil").setup({
   default_file_explorer = true,
   delete_to_trash = true,
+  float = require("fzf-oil").float,
+  preview_win = require("fzf-oil").preview_win,
 })
-vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
 require("flash").setup()
 vim.keymap.set({ "n", "x", "o" }, "s", function()
@@ -213,10 +214,12 @@ vim.keymap.set("n", "grn", function()
   require("live-rename").rename()
 end)
 
+local browser = require("fzf-oil").setup()
+local oil_browser = require("fzf-oil").setup({ start_mode = "oil" })
+vim.keymap.set("n", "<leader>ff", browser.browse)
+vim.keymap.set("n", "-", oil_browser.browse)
+
 require("fzf-lua").register_ui_select()
-vim.keymap.set("n", "<leader>ff", function()
-  require("fzf-lua").files()
-end)
 vim.keymap.set("n", "<leader>fr", function()
   require("fzf-lua").oldfiles()
 end)
