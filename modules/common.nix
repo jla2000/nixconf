@@ -68,6 +68,7 @@
         completion.enable = true;
         interactiveShellInit = /* bash */ ''
           set -o vi
+          export PATH="$HOME/.local/bin:$PATH"
         '';
       };
 

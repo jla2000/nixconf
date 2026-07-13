@@ -32,6 +32,7 @@ in
       networking.hostName = "heatwave-pro";
       vector.proxy-settings.enable = true;
 
+      programs.ssh.startAgent = true;
       stylix.colorscheme = "catppuccin-latte";
 
       environment.systemPackages = with pkgs; [
@@ -40,6 +41,8 @@ in
         bridge-utils
         unixtools.ifconfig
         dnsmasq
+        glab
+        jira-cli-go
       ];
 
       # Set the suid bit for the qemu-bridge-helper
