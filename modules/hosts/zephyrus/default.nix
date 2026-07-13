@@ -35,7 +35,6 @@
         zed-editor
         code-cursor
         openspec
-        inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop
       ];
 
       system.stateVersion = "26.05";

@@ -28,10 +28,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hermes-agent = {
-      url = "github:NousResearch/hermes-agent/fac85518fc8c6a5095f05184016f21294934abb1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
