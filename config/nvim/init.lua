@@ -1,4 +1,6 @@
 vim.g.mapleader = " "
+-- <C-h/j/k/l> is owned by vim-herdr-navigation (falls back to tmux/wincmd)
+vim.g.tmux_navigator_no_mappings = 1
 
 vim.opt.number = true
 vim.opt.cursorline = true
@@ -44,10 +46,6 @@ vim.keymap.set("n", "<tab>", "<cmd>bn<cr>")
 vim.keymap.set("n", "<s-tab>", "<cmd>bp<cr>")
 vim.keymap.set("n", "<leader>bd", "<cmd>bd<cr>")
 
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 

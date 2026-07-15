@@ -73,6 +73,22 @@
                 oil-nvim
               ];
             })
+            (pkgs.vimUtils.buildVimPlugin {
+              pname = "vim-herdr-navigation";
+              version = "unstable-2026-07-15";
+              src = pkgs.fetchFromGitHub {
+                owner = "paulbkim-dev";
+                repo = "vim-herdr-navigation";
+                rev = "53e318c772c4d3b7fbd904ac43bcf3e5b5d8b244";
+                hash = "sha256-vUUt46jiK6ZsPH8D13/+IIlqT3KbFliPJkNplsVqiQo=";
+              };
+              # Upstream ships the editor half as editor/nvim.lua, not in
+              # plugin/, so expose it where Neovim auto-loads it.
+              postInstall = ''
+                mkdir -p $out/plugin
+                cp $out/editor/nvim.lua $out/plugin/vim-herdr-navigation.lua
+              '';
+            })
           ];
         };
         settings = {

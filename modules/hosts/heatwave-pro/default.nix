@@ -43,6 +43,7 @@ in
         dnsmasq
         glab
         jira-cli-go
+        hunk
       ];
 
       # Set the suid bit for the qemu-bridge-helper

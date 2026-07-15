@@ -17,6 +17,30 @@
               command = "jjui";
               description = "run jjui";
             }
+            {
+              key = "ctrl+h";
+              type = "plugin_action";
+              command = "vim-herdr-navigation.left";
+              description = "navigate left (vim/herdr)";
+            }
+            {
+              key = "ctrl+j";
+              type = "plugin_action";
+              command = "vim-herdr-navigation.down";
+              description = "navigate down (vim/herdr)";
+            }
+            {
+              key = "ctrl+k";
+              type = "plugin_action";
+              command = "vim-herdr-navigation.up";
+              description = "navigate up (vim/herdr)";
+            }
+            {
+              key = "ctrl+l";
+              type = "plugin_action";
+              command = "vim-herdr-navigation.right";
+              description = "navigate right (vim/herdr)";
+            }
           ];
         };
         ui = {
@@ -28,6 +52,8 @@
     in
     {
       environment.systemPackages = [
+        # jq: vim-herdr-navigation's navigate.sh needs it to detect Vim panes
+        pkgs.jq
         (inputs.wrapper-modules.lib.wrapPackage (
           { ... }:
           {
