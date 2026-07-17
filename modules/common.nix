@@ -61,7 +61,12 @@
         };
       };
 
-      programs.zoxide.enable = true;
+      programs.starship.enable = true;
+
+      programs.zoxide = {
+        enable = true;
+        enableFishIntegration = true;
+      };
 
       programs.bash = {
         enable = true;
@@ -69,6 +74,14 @@
         interactiveShellInit = /* bash */ ''
           set -o vi
           export PATH="$HOME/.local/bin:$PATH"
+        '';
+      };
+
+      programs.fish = {
+        enable = true;
+        interactiveShellInit = /* fish */ ''
+          fish_hybrid_key_bindings
+          set fish_greeting
         '';
       };
 
@@ -84,6 +97,11 @@
         man-pages
         man-pages-posix
         python3
+        fishPlugins.bass
+        fishPlugins.autopair
+        fishPlugins.fzf
       ];
+
+      users.defaultUserShell = pkgs.fish;
     };
 }

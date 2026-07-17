@@ -13,7 +13,7 @@
         self.nixosModules.herdr
         self.nixosModules.tmux
         self.nixosModules.opencode
-        self.nixosModules.flyline
+        # self.nixosModules.flyline
       ];
 
       options.profile.identity = {
