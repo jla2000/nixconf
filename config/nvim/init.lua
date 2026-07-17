@@ -217,7 +217,9 @@ end)
 
 local browser = require("fzf-oil").setup()
 local oil_browser = require("fzf-oil").setup({ start_mode = "oil" })
-vim.keymap.set("n", "<leader>ff", browser.browse)
+vim.keymap.set("n", "<leader>ff", function()
+  browser.browse(vim.fs.root(0, ".git") or vim.fn.getcwd(), true)
+end)
 vim.keymap.set("n", "-", oil_browser.browse)
 
 require("fzf-lua").register_ui_select()
