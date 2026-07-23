@@ -35,16 +35,34 @@ in
       programs.ssh.startAgent = true;
       stylix.colorscheme = "catppuccin-latte";
 
-      environment.systemPackages = with pkgs; [
-        nodejs
-        qemu
-        bridge-utils
-        unixtools.ifconfig
-        dnsmasq
-        glab
-        jira-cli-go
-        hunk
-      ];
+      environment.systemPackages =
+        with pkgs;
+        let
+          grimoire = stdenv.mkDerivation rec {
+            name = "grimoire";
+            version = "v0.11.1";
+            src = fetchTarball {
+              url = "https://github.com/grimoire-rs/grimoire/releases/download/${version}/grimoire-x86_64-unknown-linux-gnu.tar.gz";
+              sha256 = "sha256:17c7pih7jcaiwcy79fyacxqbr1clq59j6blqyxf59d4821nkn6p3";
+            };
+            nativeBuildInputs = [ autoPatchelfHook ];
+            buildInputs = [ libgcc ];
+            installPhase = ''
+              install -Dm755 grim $out/bin/grim
+            '';
+          };
+        in
+        [
+          nodejs
+          qemu
+          bridge-utils
+          unixtools.ifconfig
+          dnsmasq
+          glab
+          jira-cli-go
+          hunk
+          grimoire
+        ];
 
       # Set the suid bit for the qemu-bridge-helper
       security.wrappers.qemu-bridge-helper = {
