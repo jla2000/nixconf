@@ -42,6 +42,7 @@
 
       # Use latest kernel.
       boot.kernelPackages = pkgs.linuxPackages_latest;
+      boot.loader.systemd-boot.configurationLimit = 5;
 
       environment.variables.EDITOR = "nvim";
 
@@ -58,6 +59,11 @@
             "flakes"
           ];
           trusted-users = [ "jan" ];
+        };
+        gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 7d";
         };
       };
 
@@ -86,6 +92,7 @@
       };
 
       environment.systemPackages = with pkgs; [
+        kmod
         uutils-coreutils-noprefix
         eza
         htop-vim
