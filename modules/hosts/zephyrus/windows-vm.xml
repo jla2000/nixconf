@@ -1,0 +1,209 @@
+<!--
+  Windows 11 VM with AMD dGPU passthrough + Looking Glass.
+  Zephyrus GA402 (Ryzen 9 6900HS + Radeon RX 6700S dGPU).
+
+  dGPU (from lspci -nn):
+    03:00.0 VGA   [1002:73ef] Navi 23 RX 6700S   => IOMMU group 15
+    03:00.1 Audio [1002:ab28] Navi HDMI/DP        => IOMMU group 16
+  iGPU 07:00.0 stays on host (do NOT passthrough).
+
+  hostdev is managed='no' ON PURPOSE. The dGPU is bound to vfio-pci in the
+  initrd, before amdgpu can touch it. With managed='yes' libvirt reattaches the
+  card to amdgpu on VM shutdown, so the next boot of the VM gets a card that
+  amdgpu has already initialised — that half-initialised state is what makes the
+  Adrenalin installer hang while loading the display driver.
+
+  Usage:
+    1. Rebuild with "nixos-rebuild boot" against this flake, then reboot.
+       The initrd binding only takes effect on a fresh boot.
+    2. Confirm both functions are on vfio-pci:
+         ls /sys/bus/pci/drivers/vfio-pci/ | grep 03:00
+       Must list 0000:03:00.0 AND 0000:03:00.1. If 03:00.0 shows amdgpu in
+       `lspci -nnk`, stop — the VM will not work.
+    3. qemu-img create -f qcow2 /var/lib/libvirt/images/win11.qcow2 80G
+    4. Place Windows 11 ISO at /var/lib/libvirt/images/win11.iso
+    5. virsh -c qemu:///system define windows-vm.xml
+    6. Install Windows via virt-manager over VNC (UEFI + vTPM enabled below).
+    7. Inside Windows: install AMD Adrenalin driver, then the Looking Glass host app.
+    8. Run: looking-glass-client   on the Linux host.
+
+  Memory: 8 GiB of the host's 16 GiB. The Adrenalin installer needs headroom;
+  4 GiB is where it starts thrashing on a fresh Windows 11 install.
+
+  vCPUs pinned to physical cores 4-7 (host CPUs 8-15, siblings are adjacent
+  pairs), leaving cores 0-3 for the host.
+
+  Looking Glass IVSHMEM: 128 MiB. The naive formula for the 2560x1600 panel
+  (w * h * 4 * 2 + overhead ~= 43 MiB) suggests 64 MiB, but that is not enough
+  in practice: the host app's indirect display driver resizes the virtual
+  display to match the client window, and at full screen the client fails with
+  "IVSHMEM too small, screen truncated" and the renderer aborts. 128 MiB leaves
+  headroom for the larger stride the IDD picks (2624 for a 2561-wide frame).
+  qemu resizes /dev/shm/looking-glass to this at VM start.
+-->
+<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+  <name>win11</name>
+  <!-- Matches the already-defined domain so redefining keeps the existing
+       nvram (and therefore the Windows UEFI boot entry). -->
+  <uuid>b33d08d8-72dd-4b75-8bec-b705d1e3aaea</uuid>
+  <memory unit='GiB'>8</memory>
+  <currentMemory unit='GiB'>8</currentMemory>
+
+  <vcpu placement='static'>8</vcpu>
+  <cputune>
+    <vcpupin vcpu='0' cpuset='8'/>
+    <vcpupin vcpu='1' cpuset='9'/>
+    <vcpupin vcpu='2' cpuset='10'/>
+    <vcpupin vcpu='3' cpuset='11'/>
+    <vcpupin vcpu='4' cpuset='12'/>
+    <vcpupin vcpu='5' cpuset='13'/>
+    <vcpupin vcpu='6' cpuset='14'/>
+    <vcpupin vcpu='7' cpuset='15'/>
+    <emulatorpin cpuset='0-3'/>
+  </cputune>
+
+  <os firmware='efi'>
+    <type arch='x86_64' machine='q35'>hvm</type>
+    <nvram>/var/lib/libvirt/qemu/nvram/win11_VARS.fd</nvram>
+  </os>
+
+  <features>
+    <acpi/>
+    <apic/>
+    <!-- Full enlightenment set: Windows 11 is markedly more stable with these,
+         and vendor_id + <kvm hidden> keep the AMD installer from taking its
+         "running under a hypervisor" code path. -->
+    <hyperv mode='custom'>
+      <relaxed state='on'/>
+      <vapic state='on'/>
+      <spinlocks state='on' retries='8191'/>
+      <vpindex state='on'/>
+      <synic state='on'/>
+      <stimer state='on'/>
+      <reset state='on'/>
+      <frequencies state='on'/>
+      <tlbflush state='on'/>
+      <ipi state='on'/>
+      <vendor_id state='on' value='randomid'/>
+    </hyperv>
+    <kvm>
+      <hidden state='on'/>
+    </kvm>
+    <vmport state='off'/>
+  </features>
+
+  <cpu mode='host-passthrough' check='partial' migratable='on'>
+    <topology sockets='1' dies='1' cores='4' threads='2'/>
+    <feature policy='require' name='topoext'/>
+  </cpu>
+
+  <clock offset='localtime'>
+    <timer name='rtc' tickpolicy='catchup'/>
+    <timer name='pit' tickpolicy='delay'/>
+    <timer name='hpet' present='no'/>
+    <timer name='hypervclock' present='yes'/>
+  </clock>
+
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <pm>
+    <suspend-to-mem enabled='no'/>
+    <suspend-to-disk enabled='no'/>
+  </pm>
+
+  <devices>
+    <emulator>/run/libvirt/nix-emulators/qemu-system-x86_64</emulator>
+
+    <!-- dGPU passthrough: 03:00.0 VGA + 03:00.1 Audio (AMD Navi 23).
+         The laptop dGPU has no readable ROM BAR (its vBIOS lives in the system
+         ACPI VFCT table), so the dumped ROM is required here. -->
+    <hostdev mode='subsystem' type='pci' managed='no'>
+      <source>
+        <address domain='0' bus='3' slot='0' function='0'/>
+      </source>
+      <rom file='/var/lib/libvirt/images/rx6700s.rom' bar='on'/>
+      <address type='pci' domain='0' bus='9' slot='0' function='0' multifunction='on'/>
+    </hostdev>
+    <hostdev mode='subsystem' type='pci' managed='no'>
+      <source>
+        <address domain='0' bus='3' slot='0' function='1'/>
+      </source>
+      <address type='pci' domain='0' bus='9' slot='0' function='1'/>
+    </hostdev>
+
+    <!-- virtual TPM -->
+    <tpm model='tpm-crb'>
+      <backend type='emulator' version='2.0'/>
+    </tpm>
+
+    <!-- SATA: Windows disk -->
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='/var/lib/libvirt/images/win11.qcow2'/>
+      <target dev='sda' bus='sata'/>
+    </disk>
+    <!-- SATA: Windows installer ISO -->
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <source file='/var/lib/libvirt/images/win11.iso'/>
+      <target dev='sdb' bus='sata'/>
+      <readonly/>
+    </disk>
+
+    <!-- e1000e NIC (Intel driver in stock Windows; switch to virtio after driver install) -->
+    <interface type='network'>
+      <source network='default'/>
+      <model type='e1000e'/>
+    </interface>
+
+    <!-- input via Looking Glass; fallback evdev passthrough optional -->
+    <input type='mouse' bus='ps2'/>
+    <input type='keyboard' bus='ps2'/>
+    <input type='tablet' bus='usb'/>
+
+    <!-- audio via host pipewire-pulse -->
+    <sound model='ich9'/>
+    <audio id='1' type='pulseaudio' serverName='/run/user/1000/pulse/native'/>
+
+    <!-- Emulated head for setup. Keep this as cirrus: it is what this Windows
+         install was built against and is the only model it renders on. Switching
+         to qxl gives a live-but-black framebuffer, because the guest has no QXL
+         driver and does not fall back to the basic display adapter here.
+         Switch to <model type='none'/> once Looking Glass is confirmed working. -->
+    <video>
+      <model type='cirrus'/>
+    </video>
+    <graphics type='vnc' port='-1' autoport='yes' listen='127.0.0.1'/>
+    <!-- Looking Glass renders the framebuffer from /dev/shm but carries keyboard
+         and mouse over SPICE, so this device is what makes the client interactive.
+         gl is off on purpose: the guest renders on the passthrough GPU, SPICE is
+         only an input transport here. -->
+    <graphics type='spice' autoport='yes'>
+      <listen type='address' address='127.0.0.1'/>
+      <image compression='off'/>
+      <gl enable='no'/>
+    </graphics>
+
+    <!-- serial for debugging -->
+    <serial type='pty'>
+      <target port='0'/>
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
+
+    <memballoon model='virtio'/>
+  </devices>
+
+  <!-- Looking Glass IVSHMEM (libvirt 12.4 dropped <shmem>; QEMU 11.0 still has ivshmem-plain) -->
+  <qemu:commandline>
+    <!-- fake battery: AMD mobile dGPU refuses driver load without one -->
+    <qemu:arg value='-acpitable'/>
+    <qemu:arg value='file=/var/lib/libvirt/images/acpitable.bin'/>
+    <qemu:arg value='-object'/>
+    <qemu:arg value='memory-backend-file,size=128M,share=on,id=lg-mem,mem-path=/dev/shm/looking-glass'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='ivshmem-plain,memdev=lg-mem,bus=pcie.0,addr=0x6'/>
+  </qemu:commandline>
+</domain>

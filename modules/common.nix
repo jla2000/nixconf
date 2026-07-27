@@ -93,6 +93,7 @@
 
       environment.systemPackages = with pkgs; [
         kmod
+        pciutils
         uutils-coreutils-noprefix
         eza
         htop-vim
