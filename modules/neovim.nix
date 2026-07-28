@@ -43,8 +43,8 @@
         specs = {
           start = with pkgs.vimPlugins; [
             flash-nvim
-            fzf-lua
             live-rename-nvim
+            mini-nvim
             nvim-lspconfig
             nvim-treesitter-context
             nvim-treesitter-textobjects
@@ -59,20 +59,6 @@
             persistence-nvim
             gruvbox-nvim
             catppuccin-nvim
-            (pkgs.vimUtils.buildVimPlugin {
-              pname = "fzf-oil-nvim";
-              version = "unstable-2026-07-15";
-              src = pkgs.fetchFromGitHub {
-                owner = "ingur";
-                repo = "fzf-oil.nvim";
-                rev = "bc20b4d0d3531c9af93247158f89872bf1cea46b";
-                hash = "sha256-XIpSCYjIckz4yZPQWmU60yG9+CcvmaODfLtwkkn4Y8w=";
-              };
-              dependencies = with pkgs.vimPlugins; [
-                fzf-lua
-                oil-nvim
-              ];
-            })
             (pkgs.vimUtils.buildVimPlugin {
               pname = "vim-herdr-navigation";
               version = "unstable-2026-07-15";
@@ -98,7 +84,13 @@
           ];
           config_directory = lib.mkDefault ../config/nvim;
         };
+        # mini.pick reads rg's own config file; without it rg skips dotfiles.
+        envDefault.RIPGREP_CONFIG_PATH = pkgs.writeText "ripgreprc" ''
+          --hidden
+          --glob=!.git/*
+        '';
         runtimePkgs = with pkgs; [
+          ripgrep
           lua-language-server
           markdownlint-cli2
           marksman

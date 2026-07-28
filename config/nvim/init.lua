@@ -162,8 +162,6 @@ end)
 require("oil").setup({
   default_file_explorer = true,
   delete_to_trash = true,
-  float = require("fzf-oil").float,
-  preview_win = require("fzf-oil").preview_win,
 })
 
 require("flash").setup()
@@ -194,64 +192,87 @@ vim.keymap.set({ "n", "x" }, "<leader>ap", function()
   require("sidekick.cli").prompt()
 end)
 
-require("fzf-lua").setup({
-  "telescope",
-  keymap = {
-    fzf = {
-      ["ctrl-q"] = "select-all+accept",
-    },
-  },
-  buffers = {
-    actions = {
-      ["ctrl-d"] = function(selected)
-        require("fzf-lua.actions").buf_del(selected)
-      end,
-    },
-  },
-})
-
 require("live-rename").setup()
 vim.keymap.set("n", "grn", function()
   require("live-rename").rename()
 end)
 
-local browser = require("fzf-oil").setup()
-local oil_browser = require("fzf-oil").setup({ start_mode = "oil" })
-vim.keymap.set("n", "<leader>ff", function()
-  browser.browse(vim.fs.root(0, ".git") or vim.fn.getcwd(), true)
-end)
-vim.keymap.set("n", "-", oil_browser.browse)
+require("mini.extra").setup()
+require("mini.pick").setup({
+  window = {
+    config = function()
+      return {
+        anchor = "NW",
+        row = 0,
+        col = 0,
+        width = vim.o.columns,
+        height = vim.o.lines - 2,
+      }
+    end,
+  },
+  mappings = {
+    toggle_explorer = {
+      char = "<C-e>",
+      func = function()
+        local source = MiniPick.get_picker_opts().source
+        local cwd, was_explorer = source.cwd, source.name == "File explorer"
+        vim.schedule(function()
+          if was_explorer then
+            MiniPick.builtin.files(nil, { source = { cwd = cwd } })
+          else
+            MiniExtra.pickers.explorer({ cwd = cwd })
+          end
+        end)
+        return true
+      end,
+    },
+    wipeout = {
+      char = "<C-d>",
+      func = function()
+        local item = MiniPick.get_picker_matches().current
+        if type(item) == "table" and item.bufnr then
+          vim.api.nvim_buf_delete(item.bufnr, {})
+          MiniPick.set_picker_items(MiniPick.get_picker_items(), { do_match = true })
+        end
+      end,
+    },
+  },
+})
+vim.ui.select = MiniPick.ui_select
 
-require("fzf-lua").register_ui_select()
+vim.keymap.set("n", "-", "<cmd>Oil<cr>")
+vim.keymap.set("n", "<leader>e", function()
+  MiniExtra.pickers.explorer()
+end)
+vim.keymap.set("n", "<leader>ff", function()
+  MiniPick.builtin.files(nil, { source = { cwd = vim.fs.root(0, ".git") or vim.fn.getcwd() } })
+end)
 vim.keymap.set("n", "<leader>fr", function()
-  require("fzf-lua").oldfiles()
+  MiniExtra.pickers.oldfiles()
 end)
 vim.keymap.set("n", "<leader>fb", function()
-  require("fzf-lua").buffers()
+  MiniPick.builtin.buffers()
 end)
 vim.keymap.set("n", "<leader>sg", function()
-  require("fzf-lua").live_grep({ hidden = true })
+  MiniPick.builtin.grep_live()
 end)
 vim.keymap.set("n", "<leader>ss", function()
-  require("fzf-lua").lsp_document_symbols()
+  MiniExtra.pickers.lsp({ scope = "document_symbol" })
 end)
 vim.keymap.set("n", "<leader>sS", function()
-  require("fzf-lua").lsp_live_workspace_symbols()
+  MiniExtra.pickers.lsp({ scope = "workspace_symbol" })
 end)
 vim.keymap.set("n", "<leader>sR", function()
-  require("fzf-lua").resume()
+  MiniPick.builtin.resume()
 end)
 vim.keymap.set("n", "<leader>d", function()
-  require("fzf-lua").lsp_workspace_diagnostics()
+  MiniExtra.pickers.diagnostic({ scope = "all" })
 end)
 vim.keymap.set("n", "grr", function()
-  require("fzf-lua").lsp_references()
-end)
-vim.keymap.set("n", "gra", function()
-  require("fzf-lua").lsp_code_actions()
+  MiniExtra.pickers.lsp({ scope = "references" })
 end)
 vim.keymap.set("n", "gd", function()
-  require("fzf-lua").lsp_definitions()
+  MiniExtra.pickers.lsp({ scope = "definition" })
 end)
 
 require("blink.cmp").setup({})
