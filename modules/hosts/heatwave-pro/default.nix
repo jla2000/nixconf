@@ -73,18 +73,32 @@ in
       };
 
       services.ollama.enable = true;
-      services.xserver.videoDrivers = [ "nvidia" ];
-      hardware.nvidia.open = true;
 
       environment.sessionVariables = {
+        # GPU access comes from wsl.useWindowsDriver (wsl-lib), not the nvidia
+        # driver: there is no /dev/nvidia*, only /dev/dxg. /run/opengl-driver/lib
+        # is not on the default loader path, so libcuda needs this.
         LD_LIBRARY_PATH = "/usr/lib/wsl/lib";
+        # There is no /dev/dri, so mesa's loader picks swrast on its own.
+        # GALLIUM_DRIVER selects the backend (mesa 26 ignores
+        # MESA_LOADER_DRIVER_OVERRIDE now that DRI is libdril-based);
+        # the adapter name then picks the dGPU over the Intel iGPU.
+        GALLIUM_DRIVER = "d3d12";
         MESA_D3D12_DEFAULT_ADAPTER_NAME = "Nvidia";
       };
 
       nix.settings = {
         substituters = [ "http://vistrpesbul1041.vi.vector.int:8080/fenet" ];
         trusted-public-keys = [ "fenet:wgmgt7W5UYsB6UK9izZ1do1aF5xm7R3WAvDw4vEX4Ts=" ];
+        # The 1 MiB default throttles substitution from a LAN-local cache.
+        download-buffer-size = 512 * 1024 * 1024;
       };
+
+      boot.tmp.cleanOnBoot = true;
+
+      # podman leaks multi-GB scratch files here on interrupted pulls, and the
+      # tmpfiles default of 30d lets them pile up.
+      systemd.tmpfiles.rules = [ "d /var/tmp 1777 root root 7d" ];
 
       systemd.services.nix-daemon.serviceConfig = {
         Environment = [

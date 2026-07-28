@@ -53,12 +53,15 @@
       nix = {
         registry.nixpkgs.flake = inputs.nixpkgs;
         settings = {
-          auto-optimise-store = true;
           experimental-features = [
             "nix-command"
             "flakes"
           ];
           trusted-users = [ "jan" ];
+        };
+        optimise = {
+          automatic = true;
+          dates = "weekly";
         };
         gc = {
           automatic = true;

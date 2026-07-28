@@ -1,12 +1,20 @@
 { inputs, ... }:
 {
   flake.nixosModules.wsl =
-    { lib, pkgs, ... }:
+    { config, lib, pkgs, ... }:
     {
       imports = [ inputs.nixos-wsl.nixosModules.default ];
 
       wsl = {
         enable = true;
+        # /init polls `systemctl is-system-running | grep -E "running|degraded"`
+        # and `systemctl is-active user@1000.service` through sh with a bare
+        # PATH, so both binaries must exist in /bin or boot and login-session
+        # detection time out.
+        extraBin = [
+          { src = "${config.systemd.package}/bin/systemctl"; }
+          { src = "${pkgs.gnugrep}/bin/grep"; }
+        ];
         startMenuLaunchers = true;
         useWindowsDriver = true;
         interop.register = true;

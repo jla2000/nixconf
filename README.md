@@ -9,3 +9,4 @@
 TODO's
 
 - Use agenix or sops-nix
+- Use stable nixpkgs and unstable for frequently updated packages
