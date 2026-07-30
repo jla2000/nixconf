@@ -240,12 +240,26 @@ require("mini.pick").setup({
 })
 vim.ui.select = MiniPick.ui_select
 
+local function workspace()
+  return vim.fs.root(0, ".git") or vim.fn.getcwd()
+end
+
+-- Buffer name is empty when unnamed and a URI for oil:// buffers.
+local function buf_dir()
+  local name = vim.api.nvim_buf_get_name(0)
+  local dir = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
+  return vim.fn.isdirectory(dir) == 1 and dir or vim.fn.getcwd()
+end
+
 vim.keymap.set("n", "-", "<cmd>Oil<cr>")
 vim.keymap.set("n", "<leader>e", function()
-  MiniExtra.pickers.explorer()
+  MiniExtra.pickers.explorer({ cwd = buf_dir() })
+end)
+vim.keymap.set("n", "<leader>E", function()
+  MiniExtra.pickers.explorer({ cwd = workspace() })
 end)
 vim.keymap.set("n", "<leader>ff", function()
-  MiniPick.builtin.files(nil, { source = { cwd = vim.fs.root(0, ".git") or vim.fn.getcwd() } })
+  MiniPick.builtin.files(nil, { source = { cwd = workspace() } })
 end)
 vim.keymap.set("n", "<leader>fr", function()
   MiniExtra.pickers.oldfiles()
