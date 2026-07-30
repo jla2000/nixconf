@@ -45,9 +45,7 @@
         };
         ui = {
           prompt_new_tab_name = false;
-          pane_gaps = false;
         };
-        experimental.pane_history = false;
       };
     in
     {
