@@ -11,6 +11,7 @@
     {
       imports = [
         self.nixosModules.desktop
+        self.nixosModules.ghostty
         self.nixosModules.zephyrus-hardware
         self.nixosModules.zephyrus-gpu-passthrough
         inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
@@ -26,7 +27,6 @@
       networking.hostName = "zephyrus";
 
       environment.systemPackages = with pkgs; [
-        ghostty
         zed-editor
         code-cursor
         openspec

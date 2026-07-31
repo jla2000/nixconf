@@ -19,6 +19,7 @@ in
         "${nixpkgs-vector}/modules/vector/default.nix"
         self.nixosModules.base
         self.nixosModules.alacritty
+        self.nixosModules.ghostty
         self.nixosModules.wsl
         self.nixosModules.helix
       ];
