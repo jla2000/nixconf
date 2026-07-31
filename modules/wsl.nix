@@ -28,6 +28,22 @@
         };
       };
 
+      # WSL 2.7.3-2.7.11 stopped mounting /mnt/shared_memory in the user distro,
+      # so weston's rdp_allocate_shared_memory fails with EIO, sets
+      # use_gfxredir=0, and every window falls back to RAIL "[WARN: COPY MODE]"
+      # instead of VAIL shared memory. https://github.com/microsoft/wslg/issues/1456
+      # The condition matters: once WSL mounts virtiofs there again, stacking
+      # tmpfs on top would silently re-break VAIL. Drop this block then.
+      systemd.mounts = [
+        {
+          what = "tmpfs";
+          where = "/mnt/shared_memory";
+          type = "tmpfs";
+          wantedBy = [ "multi-user.target" ];
+          unitConfig.ConditionPathIsMountPoint = "!/mnt/shared_memory";
+        }
+      ];
+
       # The only Windows tools actually used; wrappers keep them on PATH
       # without the slow /mnt/c directories.
       environment.systemPackages = [
