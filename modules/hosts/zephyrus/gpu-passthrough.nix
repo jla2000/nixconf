@@ -26,8 +26,8 @@
         '';
       });
 
-      # Boots the guest, attaches Looking Glass fullscreen, and shuts the guest
-      # down again when the window closes.
+      # Boots the guest, attaches Looking Glass, and shuts the guest down again
+      # when the window closes.
       windows-vm = pkgs.writeShellApplication {
         name = "windows-vm";
         runtimeInputs = [
@@ -89,32 +89,17 @@
             | grep '^spice://' | head -1 || true)
           spiceport=''${spiceurl##*:}
 
-          # win:setGuestRes=no is the important one on a fractionally scaled
-          # output. KWin runs this panel at 1.45 scale (2560x1600 native,
-          # 1766x1104 logical). Left enabled, the client asks the guest IDD to
-          # match the window and the scale gets applied twice on the way
-          # (1766 * 1.45 * 1.45 = 3713), so the guest ends up at 3713x2319 and
-          # the whole desktop is resampled. With it off the guest keeps its own
-          # resolution; set that to 2560x1600 in Windows and the view is 1:1.
-          # Note wayland:fractionScale must stay at its default (yes) -
-          # disabling it magnifies everything by 1.45 instead.
-          # Deliberately NOT starting fullscreen (-F). On a fractionally scaled
-          # output the surface scale is only negotiated after the surface is
-          # mapped, so launching straight into fullscreen makes the client
-          # commit to the logical size (1766x1104) rather than the panel's
-          # native 2560x1600, and the guest ends up cropped and upscaled.
-          # Opening windowed and going fullscreen afterwards resizes from a
-          # correct baseline.
+          # Open windowed, and do not size the window at startup: no -F
+          # (fullscreen) and no -T (maximize). KWin drives this panel at 1.45
+          # fractional scale (2560x1600 native, 1766x1104 logical), and the
+          # Wayland surface scale is only negotiated once the surface is mapped.
+          # Any startup sizing flag therefore commits to the logical size, and
+          # the guest display driver follows it, ending up cropped and resampled.
+          # Maximize or fullscreen by hand once the window is up.
           #
-          # win:setGuestRes is left at its default (yes) so the guest display
-          # follows the window size again. That is only safe because the window
-          # no longer starts fullscreen: it was starting fullscreen that fed the
-          # client a mis-scaled size, which setGuestRes then pushed into the
-          # guest (1766 * 1.45 * 1.45 = 3713x2319).
-          # Do not maximize at startup either (-T). Like -F, it sizes the window
-          # before the compositor has reported the fractional scale, so the
-          # guest ends up mis-scaled. Open at the default size and maximize or
-          # fullscreen by hand afterwards.
+          # Everything scaling-related is left at upstream defaults on purpose.
+          # Overriding wayland:fractionScale or win:setGuestRes compensates for
+          # this in the wrong place and breaks differently.
           lgopts=(
             -S
             input:escapeKey=KEY_RIGHTCTRL
@@ -186,6 +171,7 @@
       systemd.tmpfiles.rules = [
         "f /dev/shm/looking-glass 0660 qemu-libvirtd kvm - -"
       ];
+
 
       security.sudo.wheelNeedsPassword = false;
 

@@ -201,6 +201,19 @@
     <!-- fake battery: AMD mobile dGPU refuses driver load without one -->
     <qemu:arg value='-acpitable'/>
     <qemu:arg value='file=/var/lib/libvirt/images/acpitable.bin'/>
+    <!--
+      OEM Windows key embedded in this laptop's firmware, so the guest activates
+      itself instead of prompting for a key. Copied from
+      /sys/firmware/acpi/tables/MSDM, which is root-only and therefore
+      unreadable by qemu-libvirtd; refresh the copy if the firmware is updated:
+        sudo cp /sys/firmware/acpi/tables/MSDM /var/lib/libvirt/images/msdm.bin
+        sudo chown qemu-libvirtd:kvm /var/lib/libvirt/images/msdm.bin
+        sudo chmod 0444 /var/lib/libvirt/images/msdm.bin
+      Note the key is edition-locked. If the laptop shipped with Home it will
+      not activate the Pro guest, and Windows reports an edition mismatch.
+    -->
+    <qemu:arg value='-acpitable'/>
+    <qemu:arg value='file=/var/lib/libvirt/images/msdm.bin'/>
     <qemu:arg value='-object'/>
     <qemu:arg value='memory-backend-file,size=128M,share=on,id=lg-mem,mem-path=/dev/shm/looking-glass'/>
     <qemu:arg value='-device'/>
