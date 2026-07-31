@@ -33,7 +33,7 @@ in
       vector.proxy-settings.enable = true;
 
       programs.ssh.startAgent = true;
-      stylix.colorscheme = "catppuccin-latte";
+      stylix.colorscheme = "catppuccin-mocha";
 
       environment.systemPackages =
         with pkgs;
