@@ -91,6 +91,7 @@
         '';
         runtimePkgs = with pkgs; [
           ripgrep
+          clang-tools
           lua-language-server
           markdownlint-cli2
           marksman

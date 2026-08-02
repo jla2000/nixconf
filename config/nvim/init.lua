@@ -66,6 +66,7 @@ vim.lsp.enable("zls")
 vim.lsp.enable("taplo")
 vim.lsp.enable("marksman")
 vim.lsp.enable("cfu")
+vim.lsp.enable("clangd")
 
 vim.lsp.config("lua_ls", {
   settings = {
