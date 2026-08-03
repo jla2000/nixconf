@@ -79,7 +79,7 @@ in
         # GPU access comes from wsl.useWindowsDriver (wsl-lib), not the nvidia
         # driver: there is no /dev/nvidia*, only /dev/dxg. /run/opengl-driver/lib
         # is not on the default loader path, so libcuda needs this.
-        LD_LIBRARY_PATH = "/usr/lib/wsl/lib";
+        LD_LIBRARY_PATH = "/run/opengl-driver/lib";
         # There is no /dev/dri, so mesa's loader picks swrast on its own.
         # GALLIUM_DRIVER selects the backend (mesa 26 ignores
         # MESA_LOADER_DRIVER_OVERRIDE now that DRI is libdril-based);

@@ -49,6 +49,12 @@
         }
       ];
 
+      # WSL never shuts the VM down cleanly, so journald finds the active
+      # journal dirty on every boot and renames it to *.journal~ instead of
+      # rotating it. Default SystemMaxUse is 10% of the disk, so on a 1T root
+      # that debris is allowed to reach 100G before anything reclaims it.
+      services.journald.extraConfig = "SystemMaxUse=500M";
+
       # The only Windows tools actually used; wrappers keep them on PATH
       # without the slow /mnt/c directories.
       environment.systemPackages = [
