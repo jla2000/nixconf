@@ -1,7 +1,12 @@
 { inputs, ... }:
 {
   flake.nixosModules.wsl =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       imports = [ inputs.nixos-wsl.nixosModules.default ];
 
@@ -49,6 +54,8 @@
       environment.systemPackages = [
         (pkgs.writeShellScriptBin "wsl.exe" ''exec /mnt/c/Windows/system32/wsl.exe "$@"'')
         (pkgs.writeShellScriptBin "explorer.exe" ''exec /mnt/c/Windows/explorer.exe "$@"'')
+        # xdg-open's WSL branch opens non-file URLs via rundll32.exe.
+        (pkgs.writeShellScriptBin "rundll32.exe" ''exec /mnt/c/Windows/system32/rundll32.exe "$@"'')
       ];
     };
 }
