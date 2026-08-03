@@ -73,7 +73,10 @@ in
         source = "${pkgs.qemu}/libexec/qemu-bridge-helper";
       };
 
-      services.ollama.enable = true;
+      services.ollama = {
+        enable = true;
+        package = pkgs.ollama-cuda;
+      };
 
       environment.sessionVariables = {
         # GPU access comes from wsl.useWindowsDriver (wsl-lib), not the nvidia
