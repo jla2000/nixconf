@@ -7,7 +7,6 @@ vim.opt.cursorline = true
 vim.opt.undofile = true
 vim.opt.shiftwidth = 2
 vim.opt.smarttab = true
-vim.opt.smartindent = true
 vim.opt.tabstop = 2
 vim.opt.expandtab = true
 vim.opt.signcolumn = "yes:1"
@@ -114,8 +113,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "*" },
-  callback = function()
-    pcall(vim.treesitter.start)
+  callback = function(args)
+    if not pcall(vim.treesitter.start) then
+      return
+    end
+    local lang = vim.treesitter.language.get_lang(args.match)
+    if lang and vim.treesitter.query.get(lang, "indents") then
+      vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
   end,
 })
 
