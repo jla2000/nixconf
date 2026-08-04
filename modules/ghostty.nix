@@ -13,7 +13,7 @@
             flags."--config-file" = config.constructFiles.generatedConfig.path;
             constructFiles.generatedConfig = {
               content = ''
-                font-size = 13.5
+                font-size = 13
                 window-decoration = server
               '';
               relPath = "ghostty-config";

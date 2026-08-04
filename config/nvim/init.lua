@@ -207,13 +207,7 @@ require("mini.extra").setup()
 require("mini.pick").setup({
   window = {
     config = function()
-      return {
-        anchor = "NW",
-        row = 0,
-        col = 0,
-        width = vim.o.columns,
-        height = vim.o.lines - 2,
-      }
+      return { width = vim.o.columns }
     end,
   },
   mappings = {
