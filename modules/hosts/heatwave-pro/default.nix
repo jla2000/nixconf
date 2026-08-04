@@ -52,6 +52,71 @@ in
               install -Dm755 grim $out/bin/grim
             '';
           };
+          no-mistakes = stdenv.mkDerivation rec {
+            name = "no-mistakes";
+            version = "v1.45.3";
+            src = fetchurl {
+              url = "https://github.com/kunchenguid/no-mistakes/releases/download/${version}/no-mistakes-${version}-linux-amd64.tar.gz";
+              hash = "sha256-dohvlOgbP57IDMQEXp3dBGpRP8rRRFCgyaKzeAORKSk=";
+            };
+            sourceRoot = ".";
+            installPhase = ''
+              install -Dm755 no-mistakes $out/bin/no-mistakes
+            '';
+          };
+          treehouse = stdenv.mkDerivation rec {
+            name = "treehouse";
+            version = "v2.1.1";
+            src = fetchurl {
+              url = "https://github.com/kunchenguid/treehouse/releases/download/${version}/treehouse-${version}-linux-amd64.tar.gz";
+              hash = "sha256-L+PgEiCuUalnw+W6bM8Q7IO9uujkIDaNGUKFqNBMnvg=";
+            };
+            sourceRoot = ".";
+            installPhase = ''
+              install -Dm755 treehouse $out/bin/treehouse
+            '';
+          };
+          gnhf =
+            let
+              # gnhf ships a bundled dist/cli.mjs that keeps these three as
+              # runtime imports; ESM ignores NODE_PATH, so they have to sit in
+              # node_modules next to dist/.
+              deps = {
+                commander = fetchurl {
+                  url = "https://registry.npmjs.org/commander/-/commander-14.0.3.tgz";
+                  hash = "sha256-WElwPFAODzJOsBNA2L2h+exI/De7e+lxLrDdUqrZL2w=";
+                };
+                js-yaml = fetchurl {
+                  url = "https://registry.npmjs.org/js-yaml/-/js-yaml-4.3.1.tgz";
+                  hash = "sha256-CNYoK3ej5yQgYfbdVRbAGbJcUwQa0me8o7eQ153dXzQ=";
+                };
+                argparse = fetchurl {
+                  url = "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz";
+                  hash = "sha256-J5A4R/yCFeb8WjPoFJD3urpmQD+KreM3cbmIzKCXcow=";
+                };
+              };
+            in
+            stdenv.mkDerivation rec {
+              name = "gnhf";
+              version = "0.1.43";
+              src = fetchurl {
+                url = "https://registry.npmjs.org/gnhf/-/gnhf-${version}.tgz";
+                hash = "sha256-6l9EAyaO83+jDCmihJ0xugGwIw/RhPr99uF0HujXsvs=";
+              };
+              nativeBuildInputs = [ makeWrapper ];
+              installPhase = ''
+                mkdir -p $out/lib/gnhf
+                cp -r . $out/lib/gnhf/
+                ${lib.concatStrings (
+                  lib.mapAttrsToList (dep: tarball: ''
+                    mkdir -p $out/lib/gnhf/node_modules/${dep}
+                    tar -xzf ${tarball} -C $out/lib/gnhf/node_modules/${dep} --strip-components=1
+                  '') deps
+                )}
+                makeWrapper ${nodejs}/bin/node $out/bin/gnhf \
+                  --add-flags $out/lib/gnhf/dist/cli.mjs
+              '';
+            };
         in
         [
           nodejs
@@ -63,6 +128,10 @@ in
           jira-cli-go
           hunk
           grimoire
+          no-mistakes
+          treehouse
+          gnhf
+          openjdk
         ];
 
       # Set the suid bit for the qemu-bridge-helper
@@ -89,6 +158,7 @@ in
         # the adapter name then picks the dGPU over the Intel iGPU.
         GALLIUM_DRIVER = "d3d12";
         MESA_D3D12_DEFAULT_ADAPTER_NAME = "Nvidia";
+        SIP_DIR = "/home/jan/work/pes-bf-communication";
       };
 
       nix.settings = {
