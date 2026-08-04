@@ -8,6 +8,7 @@
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.git.wrap {
           settings.user = { inherit (config.profile.identity) name email; };
         };
+        lfs.enable = true;
       };
     };
 
