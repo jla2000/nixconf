@@ -1,0 +1,62 @@
+{
+  "plugins": {
+    "blink.cmp": {
+      "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "'v1.10.2'"
+    },
+    "blink.indent": {
+      "rev": "8b69b9262891fe81fe728fe6a52fa2a84dd5d5e0",
+      "src": "https://github.com/saghen/blink.indent"
+    },
+    "blink.lib": {
+      "rev": "c8fdc12c8a2fab6cf786dd7141a283f8079f902b",
+      "src": "https://github.com/saghen/blink.lib"
+    },
+    "blink.pairs": {
+      "rev": "aad9046bc4670dc91301cd62a6948feb36c55f4a",
+      "src": "https://github.com/saghen/blink.pairs",
+      "version": "'v0.6.0'"
+    },
+    "fidget.nvim": {
+      "rev": "6f793b2bcd2d35e201c09520f698bb763220908a",
+      "src": "https://github.com/j-hui/fidget.nvim"
+    },
+    "flash.nvim": {
+      "rev": "b6346946d10d07998efee029fb0f7a593806d0cd",
+      "src": "https://github.com/folke/flash.nvim"
+    },
+    "friendly-snippets": {
+      "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
+      "src": "https://github.com/rafamadriz/friendly-snippets"
+    },
+    "fzf-lua": {
+      "rev": "05e44d38de0a79c11fba5f7bf8138791b1dbdd1e",
+      "src": "https://github.com/ibhagwan/fzf-lua"
+    },
+    "lazydev.nvim": {
+      "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
+      "src": "https://github.com/folke/lazydev.nvim"
+    },
+    "live-rename.nvim": {
+      "rev": "205bddec4bf1276c81a03777f8335d4ad034ae03",
+      "src": "https://github.com/saecki/live-rename.nvim"
+    },
+    "nvim-lspconfig": {
+      "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-treesitter": {
+      "rev": "074aa4422bf029908338e855d0c0f71470a971bb",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "oil.nvim": {
+      "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
+      "src": "https://github.com/stevearc/oil.nvim"
+    },
+    "persistence.nvim": {
+      "rev": "b20b2a7887bd39c1a356980b45e03250f3dce49c",
+      "src": "https://github.com/folke/persistence.nvim"
+    }
+  }
+}

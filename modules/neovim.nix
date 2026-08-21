@@ -40,43 +40,6 @@
     {
       packages.neovim = inputs.wrapper-modules.wrappers.neovim.wrap {
         inherit pkgs;
-        specs = {
-          start = with pkgs.vimPlugins; [
-            flash-nvim
-            live-rename-nvim
-            mini-nvim
-            nvim-lspconfig
-            nvim-treesitter-context
-            nvim-treesitter-textobjects
-            nvim-treesitter.withAllGrammars
-            nvim-surround
-            oil-nvim
-            vim-tmux-navigator
-            blink-indent
-            blink-cmp
-            blink-pairs
-            sidekick-nvim
-            persistence-nvim
-            gruvbox-nvim
-            catppuccin-nvim
-            (pkgs.vimUtils.buildVimPlugin {
-              pname = "vim-herdr-navigation";
-              version = "unstable-2026-07-15";
-              src = pkgs.fetchFromGitHub {
-                owner = "paulbkim-dev";
-                repo = "vim-herdr-navigation";
-                rev = "53e318c772c4d3b7fbd904ac43bcf3e5b5d8b244";
-                hash = "sha256-vUUt46jiK6ZsPH8D13/+IIlqT3KbFliPJkNplsVqiQo=";
-              };
-              # Upstream ships the editor half as editor/nvim.lua, not in
-              # plugin/, so expose it where Neovim auto-loads it.
-              postInstall = ''
-                mkdir -p $out/plugin
-                cp $out/editor/nvim.lua $out/plugin/vim-herdr-navigation.lua
-              '';
-            })
-          ];
-        };
         settings = {
           aliases = [
             "vi"
@@ -84,12 +47,8 @@
           ];
           config_directory = lib.mkDefault ../config/nvim;
         };
-        # mini.pick reads rg's own config file; without it rg skips dotfiles.
-        envDefault.RIPGREP_CONFIG_PATH = pkgs.writeText "ripgreprc" ''
-          --hidden
-          --glob=!.git/*
-        '';
         runtimePkgs = with pkgs; [
+          tree-sitter
           ripgrep
           clang-tools
           lua-language-server
