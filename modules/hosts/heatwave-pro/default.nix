@@ -142,10 +142,10 @@ in
         source = "${pkgs.qemu}/libexec/qemu-bridge-helper";
       };
 
-      services.ollama = {
-        enable = true;
-        package = pkgs.ollama-cuda;
-      };
+      # services.ollama = {
+      #   enable = true;
+      #   package = pkgs.ollama-cuda;
+      # };
 
       environment.sessionVariables = {
         # GPU access comes from wsl.useWindowsDriver (wsl-lib), not the nvidia
@@ -182,6 +182,7 @@ in
       };
 
       nixpkgs.hostPlatform = "x86_64-linux";
+      nix.settings.sandbox-dev-shm-size = "1G";
 
       system.stateVersion = "24.05";
     };
