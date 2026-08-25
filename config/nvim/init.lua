@@ -65,14 +65,14 @@ vim.lsp.enable("nixd")
 
 vim.keymap.set("n", "<esc>", "<cmd>nohl<cr><esc>")
 vim.keymap.set("i", "jk", "<esc>")
-vim.keymap.set("n", "<tab>", "<cmd>bn<cr>")
-vim.keymap.set("n", "<s-tab>", "<cmd>bp<cr>")
+vim.keymap.set("n", "<leader>bn", "<cmd>bn<cr>")
+vim.keymap.set("n", "<leader>bp", "<cmd>bp<cr>")
 vim.keymap.set("n", "<leader>bd", "<cmd>bd<cr>")
-vim.keymap.set({ "n", "i" }, "<C-k>", "<C-w>k")
-vim.keymap.set({ "n", "i" }, "<C-j>", "<C-w>j")
-vim.keymap.set({ "n", "i" }, "<C-h>", "<C-w>h")
-vim.keymap.set({ "n", "i" }, "<C-l>", "<C-w>l")
-vim.keymap.set({ "n" }, "s", function()
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "s", function()
   require("flash").jump()
 end)
 vim.keymap.set("n", "-", "<cmd>Oil<cr>")
@@ -92,22 +92,22 @@ vim.keymap.set("n", "<leader>ql", function()
   require("persistence").load({ last = true })
 end)
 
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
+})
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
-    vim.highlight.on_yank()
-  end
+    vim.hl.on_yank()
+  end,
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("lsp_completion", { clear = true }),
   callback = function(args)
-    local client_id = args.data.client_id
-    if not client_id then
-      return
-    end
-
-    local client = vim.lsp.get_client_by_id(client_id)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
     if not client then
       return
     end
@@ -121,8 +121,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if client:supports_method("textDocument/formatting") then
       vim.api.nvim_create_autocmd("BufWritePre", {
         buffer = args.buf,
+        group = vim.api.nvim_create_augroup("lsp_format_" .. args.buf, { clear = true }),
         callback = function()
-          vim.lsp.buf.format({ async = false, bufnr = args.buf })
+          vim.lsp.buf.format({ bufnr = args.buf })
         end,
       })
     end
