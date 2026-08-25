@@ -63,10 +63,18 @@
           automatic = true;
           dates = "weekly";
         };
-        gc = {
-          automatic = true;
+        # GC handled by programs.nh.clean: nix.gc only walks /nix/var/nix/profiles
+        # and root's own profiles, so user and home-manager generations plus
+        # direnv gcroots are never collected.
+        gc.automatic = false;
+      };
+
+      programs.nh = {
+        enable = true;
+        clean = {
+          enable = true;
           dates = "weekly";
-          options = "--delete-older-than 7d";
+          extraArgs = "--keep 5 --keep-since 7d";
         };
       };
 

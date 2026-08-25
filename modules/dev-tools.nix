@@ -44,7 +44,6 @@
         how
         fd
         gdb
-        nh
         nix-output-monitor
         sd
         gcc
