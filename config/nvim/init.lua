@@ -47,6 +47,12 @@ require("nvim-treesitter").install({
   "vim",
   "vimdoc",
   "markdown",
+  "yaml",
+  "c",
+  "cpp",
+  "json",
+  "toml",
+  "nix",
 })
 
 require("blink.pairs").build()
@@ -107,6 +113,16 @@ end)
 vim.keymap.set("n", "<leader>ql", function()
   require("persistence").load({ last = true })
 end)
+
+
+vim.api.nvim_create_autocmd("PackChanged", {
+  group = vim.api.nvim_create_augroup("treesitter_update", { clear = true }),
+  callback = function(ev)
+    if ev.data.kind == "update" and ev.data.spec.name == "nvim-treesitter" then
+      require("nvim-treesitter").update()
+    end
+  end,
+})
 
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("treesitter_start", { clear = true }),
