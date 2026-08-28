@@ -42,6 +42,10 @@
       "rev": "205bddec4bf1276c81a03777f8335d4ad034ae03",
       "src": "https://github.com/saecki/live-rename.nvim"
     },
+    "nvim": {
+      "rev": "edefef779ab08ce1a4a404713e3012b0d202bd35",
+      "src": "https://github.com/catppuccin/nvim"
+    },
     "nvim-lspconfig": {
       "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f",
       "src": "https://github.com/neovim/nvim-lspconfig"

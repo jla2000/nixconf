@@ -17,9 +17,8 @@ vim.o.splitright = true
 vim.o.jumpoptions = "stack"
 vim.o.termguicolors = true
 
-vim.cmd.colorscheme(vim.env.NVIM_COLORSCHEME or "catppuccin")
-
 vim.pack.add({
+  "https://github.com/catppuccin/nvim",
   "https://github.com/saecki/live-rename.nvim",
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/nvim-treesitter/nvim-treesitter",
@@ -35,6 +34,8 @@ vim.pack.add({
   { src = "https://github.com/saghen/blink.pairs", version = "v0.6.0" },
   { src = "https://github.com/saghen/blink.cmp",   version = "v1.10.2" },
 })
+
+vim.cmd.colorscheme(vim.env.NVIM_COLORSCHEME or "catppuccin")
 
 pcall(function()
   require("vim._core.ui2").enable({})
