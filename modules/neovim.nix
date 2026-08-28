@@ -52,14 +52,11 @@
           ripgrep
           clang-tools
           lua-language-server
-          markdownlint-cli2
           marksman
           nixd
           nixfmt
           rust-analyzer
           rustfmt
-          shfmt
-          stylua
           taplo
           zls
         ];

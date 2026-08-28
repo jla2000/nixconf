@@ -84,7 +84,6 @@ vim.lsp.enable("taplo")
 vim.lsp.enable("zls")
 
 vim.keymap.set("n", "<esc>", "<cmd>nohl<cr><esc>")
-vim.keymap.set("i", "jk", "<esc>")
 vim.keymap.set("n", "<leader>bn", "<cmd>bn<cr>")
 vim.keymap.set("n", "<leader>bp", "<cmd>bp<cr>")
 vim.keymap.set("n", "<leader>bd", "<cmd>bd<cr>")
