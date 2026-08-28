@@ -12,12 +12,12 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.wrap = false
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-vim.opt.jumpoptions = "stack"
-vim.opt.termguicolors = true
+vim.o.splitbelow = true
+vim.o.splitright = true
+vim.o.jumpoptions = "stack"
+vim.o.termguicolors = true
 
-vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme(vim.env.NVIM_COLORSCHEME or "catppuccin")
 
 vim.pack.add({
   "https://github.com/saecki/live-rename.nvim",
@@ -36,7 +36,9 @@ vim.pack.add({
   { src = "https://github.com/saghen/blink.cmp",   version = "v1.10.2" },
 })
 
-require("vim._core.ui2").enable({})
+pcall(function()
+  require("vim._core.ui2").enable({})
+end)
 
 require("nvim-treesitter").install({
   "lua",
@@ -54,7 +56,14 @@ require("blink.indent").setup({ scope = { char = "│" }, static = { char = "│
 require("fidget").setup({})
 require("oil").setup({ default_file_explorer = true })
 require("lazydev").setup()
-require("fzf-lua").setup({ keymap = { fzf = { ["ctrl-q"] = "select-all+accept" } } })
+require("fzf-lua").setup({
+  keymap = { fzf = { ["ctrl-q"] = "select-all+accept" } },
+  winopts = {
+    on_create = function()
+      vim.keymap.set("t", "<C-r>", [['<C-\><C-N>"'.nr2char(getchar()).'pi']], { expr = true, buffer = true })
+    end
+  }
+})
 require("fzf-lua").register_ui_select()
 require("live-rename").setup()
 require("persistence").setup()
@@ -62,6 +71,10 @@ require("persistence").setup()
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("nixd")
+vim.lsp.enable("clangd")
+vim.lsp.enable("marksman")
+vim.lsp.enable("taplo")
+vim.lsp.enable("zls")
 
 vim.keymap.set("n", "<esc>", "<cmd>nohl<cr><esc>")
 vim.keymap.set("i", "jk", "<esc>")
@@ -81,7 +94,9 @@ vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua oldfiles<cr>")
 vim.keymap.set("n", "<leader>fb", "<cmd>FzfLua buffers<cr>")
 vim.keymap.set("n", "<leader>sg", "<cmd>FzfLua live_grep<cr>")
 vim.keymap.set("n", "<leader>sR", "<cmd>FzfLua resume<cr>")
-vim.keymap.set("n", "<leader>S", "<cmd>FzfLua lsp_live_workspace_symbols<cr>")
+vim.keymap.set("n", "<leader>d", "<cmd>FzfLua lsp_workspace_diagnostics<cr>")
+vim.keymap.set("n", "<leader>ss", "<cmd>FzfLua lsp_document_symbols<cr>")
+vim.keymap.set("n", "<leader>sS", "<cmd>FzfLua lsp_live_workspace_symbols<cr>")
 vim.keymap.set("n", "gd", "<cmd>FzfLua lsp_definitions<cr>")
 vim.keymap.set("n", "grr", "<cmd>FzfLua lsp_references<cr>")
 vim.keymap.set("n", "gra", "<cmd>FzfLua lsp_code_actions<cr>")
@@ -93,12 +108,14 @@ vim.keymap.set("n", "<leader>ql", function()
 end)
 
 vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("treesitter_start", { clear = true }),
   callback = function()
     pcall(vim.treesitter.start)
   end,
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
+  group = vim.api.nvim_create_augroup("yank_highlight", { clear = true }),
   callback = function()
     vim.hl.on_yank()
   end,
