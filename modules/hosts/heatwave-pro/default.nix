@@ -132,6 +132,7 @@ in
           treehouse
           gnhf
           openjdk
+          codex
         ];
 
       # Set the suid bit for the qemu-bridge-helper
