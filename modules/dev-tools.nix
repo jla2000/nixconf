@@ -41,6 +41,7 @@
       };
 
       environment.systemPackages = with pkgs; [
+        devenv
         how
         fd
         gdb
