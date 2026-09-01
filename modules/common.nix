@@ -121,6 +121,8 @@
         fishPlugins.fzf
       ];
 
+      security.sudo-rs.enable = true;
+
       users.defaultUserShell = pkgs.fish;
     };
 }
