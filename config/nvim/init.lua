@@ -126,7 +126,9 @@ vim.api.nvim_create_autocmd("PackChanged", {
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("treesitter_start", { clear = true }),
   callback = function()
-    pcall(vim.treesitter.start)
+    if pcall(vim.treesitter.start) then
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
   end,
 })
 
