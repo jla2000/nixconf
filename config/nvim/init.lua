@@ -75,6 +75,41 @@ require("fzf-lua").register_ui_select()
 require("live-rename").setup()
 require("persistence").setup()
 
+vim.lsp.config('rust_analyzer', {
+  settings = {
+    ['rust-analyzer'] = {
+      files = {
+        exclude = {
+          "target",
+          ".direnv",
+          "tmp"
+        }
+      },
+      cargo = {
+        targetDir = true,
+        features = "all",
+        target = vim.env.CARGO_BUILD_TARGET or vim.env.REDOX_TARGET,
+      },
+      check = {
+        command = "clippy",
+        workspace = false,
+      },
+      imports = {
+        granularity = {
+          group = "crate",
+          enforce = true,
+        },
+        group = { enable = true },
+        prefix = "crate",
+        preferNoStd = true,
+        emitMustUse = true,
+        prefixExternPrelude = true,
+      },
+      inlayHints = { lifetimeElisionHints = { enable = "skip_trivial" } },
+    }
+  }
+})
+
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("nixd")
@@ -91,24 +126,23 @@ vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
-vim.keymap.set("n", "s", function()
-  require("flash").jump()
-end)
-vim.keymap.set("n", "-", "<cmd>Oil<cr>")
-vim.keymap.set("n", "<leader>ff", "<cmd>FzfLua files<cr>")
-vim.keymap.set("n", "<leader>fr", "<cmd>FzfLua oldfiles<cr>")
-vim.keymap.set("n", "<leader>fb", "<cmd>FzfLua buffers<cr>")
-vim.keymap.set("n", "<leader>sg", "<cmd>FzfLua live_grep<cr>")
-vim.keymap.set("n", "<leader>sR", "<cmd>FzfLua resume<cr>")
-vim.keymap.set("n", "<leader>d", "<cmd>FzfLua lsp_workspace_diagnostics<cr>")
-vim.keymap.set("n", "<leader>ss", "<cmd>FzfLua lsp_document_symbols<cr>")
-vim.keymap.set("n", "<leader>sS", "<cmd>FzfLua lsp_live_workspace_symbols<cr>")
-vim.keymap.set("n", "gd", "<cmd>FzfLua lsp_definitions<cr>")
-vim.keymap.set("n", "grr", "<cmd>FzfLua lsp_references<cr>")
-vim.keymap.set("n", "gra", "<cmd>FzfLua lsp_code_actions<cr>")
-vim.keymap.set("n", "grn", function()
-  require("live-rename").rename()
-end)
+vim.keymap.set("n", "s", require("flash").jump)
+vim.keymap.set("n", "-", require("oil").open)
+vim.keymap.set("n", "<leader><leader>", FzfLua.global)
+vim.keymap.set("n", "<leader>ff", FzfLua.files)
+vim.keymap.set("n", "<leader>fr", FzfLua.oldfiles)
+vim.keymap.set("n", "<leader>fb", FzfLua.buffers)
+vim.keymap.set("n", "<leader>sg", FzfLua.live_grep)
+vim.keymap.set("n", "<leader>sR", FzfLua.resume)
+vim.keymap.set("n", "<leader>d", FzfLua.lsp_workspace_diagnostics)
+vim.keymap.set("n", "<leader>ss", FzfLua.lsp_document_symbols)
+vim.keymap.set("n", "<leader>sS", FzfLua.lsp_live_workspace_symbols)
+vim.keymap.set("n", "gd", FzfLua.lsp_definitions)
+vim.keymap.set("n", "grr", FzfLua.lsp_references)
+vim.keymap.set("n", "gra", FzfLua.lsp_code_actions)
+vim.keymap.set("n", "gri", FzfLua.lsp_incoming_calls)
+vim.keymap.set("n", "gro", FzfLua.lsp_outgoing_calls)
+vim.keymap.set("n", "grn", require("live-rename").rename)
 vim.keymap.set("n", "<leader>ql", function()
   require("persistence").load({ last = true })
 end)
