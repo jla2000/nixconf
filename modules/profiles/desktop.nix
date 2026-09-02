@@ -13,10 +13,21 @@
       services.pipewire = {
         enable = true;
         alsa.enable = true;
-        alsa.support32Bit = true;
         pulse.enable = true;
       };
 
+      # Screen reader stack (orca, speech-dispatcher, mbrola voices) is 750 MiB.
+      services.orca.enable = false;
+      services.speechd.enable = false;
+      # Akonadi + kdepim-runtime + a mariadb-server: 380 MiB, no PIM apps used.
+      programs.kde-pim.enable = false;
+      environment.plasma6.excludePackages = with pkgs.kdePackages; [
+        plasma-workspace-wallpapers # 255 MiB; the default wallpaper ships in plasma-workspace
+        elisa
+        khelpcenter
+        krdp
+        kwin-x11 # Wayland session only
+      ];
       programs.firefox.enable = true;
       hardware.bluetooth.enable = true;
       networking.networkmanager.enable = true;
@@ -30,7 +41,6 @@
 
       fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
-        nerd-fonts.monaspace
         noto-fonts-color-emoji
       ];
     };

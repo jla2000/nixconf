@@ -7,7 +7,7 @@
   };
 
   flake.nixosModules.zephyrus =
-    { pkgs, ... }:
+    { ... }:
     {
       imports = [
         self.nixosModules.desktop
@@ -25,12 +25,9 @@
       boot.loader.efi.canTouchEfiVariables = true;
 
       networking.hostName = "zephyrus";
-
-      environment.systemPackages = with pkgs; [
-        zed-editor
-        code-cursor
-        openspec
-      ];
+      # nixos-hardware defaults this on. Second mesa+llvm+glibc for 32-bit
+      # GL/Vulkan is 810 MiB; nothing 32-bit (Steam, Wine) runs here.
+      hardware.graphics.enable32Bit = false;
 
       # The dGPU is bound to vfio-pci in the initrd (see zephyrus-gpu-passthrough),
       # so supergfxd has nothing left to manage. Leaving it on is actively harmful:
