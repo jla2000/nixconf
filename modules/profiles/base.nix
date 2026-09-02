@@ -39,11 +39,6 @@
           };
         };
 
-        environment.systemPackages = [
-          pkgs.claude-code
-          pkgs.distrobox
-        ];
-
         users.users.jan = {
           isNormalUser = true;
           description = "Jan";

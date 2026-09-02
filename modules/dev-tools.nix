@@ -41,6 +41,7 @@
       };
 
       environment.systemPackages = with pkgs; [
+        distrobox
         devenv
         how
         fd

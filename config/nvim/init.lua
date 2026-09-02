@@ -16,6 +16,7 @@ vim.o.splitbelow = true
 vim.o.splitright = true
 vim.o.jumpoptions = "stack"
 vim.o.termguicolors = true
+vim.o.exrc = true
 
 vim.pack.add({
   "https://github.com/catppuccin/nvim",
@@ -74,41 +75,6 @@ require("fzf-lua").setup({
 require("fzf-lua").register_ui_select()
 require("live-rename").setup()
 require("persistence").setup()
-
-vim.lsp.config('rust_analyzer', {
-  settings = {
-    ['rust-analyzer'] = {
-      files = {
-        exclude = {
-          "target",
-          ".direnv",
-          "tmp"
-        }
-      },
-      cargo = {
-        targetDir = true,
-        features = "all",
-        target = vim.env.CARGO_BUILD_TARGET or vim.env.REDOX_TARGET,
-      },
-      check = {
-        command = "clippy",
-        workspace = false,
-      },
-      imports = {
-        granularity = {
-          group = "crate",
-          enforce = true,
-        },
-        group = { enable = true },
-        prefix = "crate",
-        preferNoStd = true,
-        emitMustUse = true,
-        prefixExternPrelude = true,
-      },
-      inlayHints = { lifetimeElisionHints = { enable = "skip_trivial" } },
-    }
-  }
-})
 
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("lua_ls")
