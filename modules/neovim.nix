@@ -40,6 +40,8 @@
     {
       packages.neovim = inputs.wrapper-modules.wrappers.neovim.wrap {
         inherit pkgs;
+        # ruby provider drags in ruby + gems (41 MiB); nothing here uses it.
+        hosts.ruby.nvim-host.enable = false;
         settings = {
           aliases = [
             "vi"

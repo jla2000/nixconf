@@ -154,6 +154,7 @@
       '';
 
       virtualisation.libvirtd = {
+        enable = true;
         qemu = {
           package = pkgs.qemu_kvm;
           swtpm.enable = true;
@@ -171,7 +172,6 @@
       systemd.tmpfiles.rules = [
         "f /dev/shm/looking-glass 0660 qemu-libvirtd kvm - -"
       ];
-
 
       security.sudo.wheelNeedsPassword = false;
 

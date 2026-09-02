@@ -5,7 +5,6 @@
     let
       how = pkgs.writeShellApplication {
         name = "how";
-        runtimeInputs = [ pkgs.claude-code ];
         text = /* bash */ ''
           if [ $# -eq 0 ]; then
             echo "usage: how <what you want to do>" >&2
@@ -58,14 +57,11 @@
         rustc
         rust-analyzer
         gh
-        mesa-demos
         xclip
         xdg-utils
         unixtools.xxd
         bacon
-        rusty-man
         jjui
-        lazyjj
         attic-client
 
         # LSP's

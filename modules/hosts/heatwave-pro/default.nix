@@ -21,7 +21,6 @@ in
         self.nixosModules.alacritty
         self.nixosModules.ghostty
         self.nixosModules.wsl
-        self.nixosModules.helix
       ];
 
       profile.identity = {
@@ -35,6 +34,8 @@ in
 
       programs.ssh.startAgent = true;
       stylix.colorscheme = "catppuccin-mocha";
+      # No Qt apps on WSL; the qt target alone pulls Qt5+Qt6 (~420 MiB).
+      stylix.targets.qt.enable = false;
 
       environment.systemPackages =
         with pkgs;
@@ -120,7 +121,7 @@ in
         in
         [
           nodejs
-          qemu
+          qemu_kvm
           bridge-utils
           unixtools.ifconfig
           dnsmasq
@@ -131,8 +132,6 @@ in
           no-mistakes
           treehouse
           gnhf
-          openjdk
-          codex
         ];
 
       # Set the suid bit for the qemu-bridge-helper
@@ -140,7 +139,7 @@ in
         owner = "root";
         group = "root";
         setuid = true;
-        source = "${pkgs.qemu}/libexec/qemu-bridge-helper";
+        source = "${pkgs.qemu_kvm}/libexec/qemu-bridge-helper";
       };
 
       # services.ollama = {

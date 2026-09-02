@@ -46,6 +46,11 @@
 
       environment.variables.EDITOR = "nvim";
 
+      # doc/info outputs and the NixOS manual: ~900 MiB nobody reads locally.
+      documentation.doc.enable = false;
+      documentation.info.enable = false;
+      documentation.nixos.enable = false;
+
       # Allow unfree packages
       nixpkgs.config.allowUnfree = true;
 

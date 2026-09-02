@@ -31,8 +31,9 @@
 
       config = {
         virtualisation = {
-          libvirtd.enable = true;
           containers.enable = true;
+          # podman 5 networks via netavark; the CNI plugins (71 MiB) are unused.
+          containers.containersConf.cniPlugins = lib.mkForce [ ];
           podman = {
             enable = true;
             dockerCompat = true;
