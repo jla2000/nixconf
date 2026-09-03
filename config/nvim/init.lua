@@ -25,6 +25,7 @@ vim.pack.add({
   "https://github.com/nvim-treesitter/nvim-treesitter",
   "https://github.com/folke/flash.nvim",
   "https://github.com/folke/persistence.nvim",
+  "https://github.com/kylechui/nvim-surround",
   "https://github.com/stevearc/oil.nvim",
   "https://github.com/ibhagwan/fzf-lua",
   "https://github.com/j-hui/fidget.nvim",
@@ -75,6 +76,7 @@ require("fzf-lua").setup({
 require("fzf-lua").register_ui_select()
 require("live-rename").setup()
 require("persistence").setup()
+require("nvim-surround").setup()
 
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("lua_ls")
