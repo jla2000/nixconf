@@ -40,6 +40,7 @@
     {
       packages.neovim = inputs.wrapper-modules.wrappers.neovim.wrap {
         inherit pkgs;
+        package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
         # ruby provider drags in ruby + gems (41 MiB); nothing here uses it.
         hosts.ruby.nvim-host.enable = false;
         settings = {
