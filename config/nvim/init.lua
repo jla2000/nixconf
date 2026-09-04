@@ -35,6 +35,7 @@ vim.pack.add({
   "https://github.com/saghen/blink.lib",
   { src = "https://github.com/saghen/blink.pairs", version = "v0.6.0" },
   { src = "https://github.com/saghen/blink.cmp",   version = "v1.10.2" },
+  { src = "https://github.com/saecki/crates.nvim", version = "stable" },
 })
 
 vim.cmd.colorscheme(vim.env.NVIM_COLORSCHEME or "catppuccin")
@@ -64,6 +65,7 @@ require("blink.indent").setup({ scope = { char = "│" }, static = { char = "│
 
 require("fidget").setup({})
 require("oil").setup({ default_file_explorer = true })
+require("crates").setup()
 require("lazydev").setup()
 require("fzf-lua").setup({
   keymap = { fzf = { ["ctrl-q"] = "select-all+accept" } },
