@@ -23,6 +23,8 @@ vim.pack.add({
   "https://github.com/saecki/live-rename.nvim",
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/nvim-treesitter/nvim-treesitter",
+  "https://github.com/nvim-treesitter/nvim-treesitter-context",
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = "main" },
   "https://github.com/folke/flash.nvim",
   "https://github.com/folke/persistence.nvim",
   "https://github.com/kylechui/nvim-surround",
@@ -33,9 +35,10 @@ vim.pack.add({
   "https://github.com/rafamadriz/friendly-snippets",
   "https://github.com/saghen/blink.indent",
   "https://github.com/saghen/blink.lib",
-  { src = "https://github.com/saghen/blink.pairs", version = "v0.6.0" },
-  { src = "https://github.com/saghen/blink.cmp",   version = "v1.10.2" },
-  { src = "https://github.com/saecki/crates.nvim", version = "stable" },
+  { src = "https://github.com/saghen/blink.pairs",                          version = "v0.6.0" },
+  { src = "https://github.com/saghen/blink.cmp",                            version = "v1.10.2" },
+  { src = "https://github.com/saecki/crates.nvim",                          version = "stable" },
+  { src = "https://github.com/rmarganti/sidekick.nvim",                     version = "herdr" },
 })
 
 vim.cmd.colorscheme(vim.env.NVIM_COLORSCHEME or "catppuccin")
@@ -79,6 +82,9 @@ require("fzf-lua").register_ui_select()
 require("live-rename").setup()
 require("persistence").setup()
 require("nvim-surround").setup()
+require("sidekick").setup({ opts = { cli = { mux = { backend = "herdr", enabled = true } } } })
+require("treesitter-context").setup({ enable = true, max_lines = 3 })
+require("nvim-treesitter-textobjects").setup({ enable = true, max_lines = 3 })
 
 vim.lsp.enable("rust_analyzer")
 vim.lsp.enable("lua_ls")
@@ -112,7 +118,31 @@ vim.keymap.set("n", "grn", require("live-rename").rename)
 vim.keymap.set("n", "<leader>ql", function()
   require("persistence").load({ last = true })
 end)
-
+vim.keymap.set("n", "<leader>aa", require("sidekick.cli").toggle)
+vim.keymap.set("n", "<leader>at", function()
+  require("sidekick.cli").send({ msg = "{this}" })
+end)
+vim.keymap.set("n", "<leader>af", function()
+  require("sidekick.cli").send({ msg = "{file}" })
+end)
+vim.keymap.set({ "x", "o" }, "af", function()
+  require "nvim-treesitter-textobjects.select".select_textobject("@function.outer", "textobjects")
+end)
+vim.keymap.set({ "x", "o" }, "if", function()
+  require "nvim-treesitter-textobjects.select".select_textobject("@function.inner", "textobjects")
+end)
+vim.keymap.set({ "x", "o" }, "ac", function()
+  require "nvim-treesitter-textobjects.select".select_textobject("@class.outer", "textobjects")
+end)
+vim.keymap.set({ "x", "o" }, "ic", function()
+  require "nvim-treesitter-textobjects.select".select_textobject("@class.inner", "textobjects")
+end)
+vim.keymap.set({ "x", "o" }, "aa", function()
+  require "nvim-treesitter-textobjects.select".select_textobject("@parameter.outer", "textobjects")
+end)
+vim.keymap.set({ "x", "o" }, "ia", function()
+  require "nvim-treesitter-textobjects.select".select_textobject("@parameter.inner", "textobjects")
+end)
 
 vim.api.nvim_create_autocmd("PackChanged", {
   group = vim.api.nvim_create_augroup("treesitter_update", { clear = true }),
