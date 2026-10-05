@@ -35,6 +35,7 @@ vim.pack.add({
   "https://github.com/rafamadriz/friendly-snippets",
   "https://github.com/saghen/blink.indent",
   "https://github.com/saghen/blink.lib",
+  "https://github.com/meanderingprogrammer/render-markdown.nvim",
   { src = "https://github.com/saghen/blink.pairs",                          version = "v0.6.0" },
   { src = "https://github.com/saghen/blink.cmp",                            version = "v1.10.2" },
   { src = "https://github.com/saecki/crates.nvim",                          version = "stable" },

@@ -80,6 +80,10 @@
       "rev": "b20b2a7887bd39c1a356980b45e03250f3dce49c",
       "src": "https://github.com/folke/persistence.nvim"
     },
+    "render-markdown.nvim": {
+      "rev": "640a3ec6d538bad17c328be373c7cad0293d9589",
+      "src": "https://github.com/meanderingprogrammer/render-markdown.nvim"
+    },
     "sidekick.nvim": {
       "rev": "208e1c5b8170c01fd1d07df0139322a76479b235",
       "src": "https://github.com/rmarganti/sidekick.nvim",
