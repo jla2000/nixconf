@@ -12,14 +12,6 @@
 
       wsl = {
         enable = true;
-        # /init polls `systemctl is-system-running | grep -E "running|degraded"`
-        # and `systemctl is-active user@1000.service` through sh with a bare
-        # PATH, so both binaries must exist in /bin or boot and login-session
-        # detection time out.
-        extraBin = [
-          { src = "${config.systemd.package}/bin/systemctl"; }
-          { src = "${pkgs.gnugrep}/bin/grep"; }
-        ];
         startMenuLaunchers = true;
         useWindowsDriver = true;
         interop.register = true;
@@ -27,9 +19,6 @@
         wslConf = {
           automount.root = lib.mkDefault "/mnt";
           user.default = lib.mkDefault "jan";
-          # Windows PATH dirs live on 9p and make every PATH scan
-          # (e.g. flyline completion warming) take seconds.
-          interop.appendWindowsPath = false;
         };
       };
 
@@ -61,10 +50,6 @@
         # WSLg has no desktop environment, so nothing else pulls in an icon
         # theme and GTK apps render with blank icons.
         pkgs.adwaita-icon-theme
-        (pkgs.writeShellScriptBin "wsl.exe" ''exec /mnt/c/Windows/system32/wsl.exe "$@"'')
-        (pkgs.writeShellScriptBin "explorer.exe" ''exec /mnt/c/Windows/explorer.exe "$@"'')
-        # xdg-open's WSL branch opens non-file URLs via rundll32.exe.
-        (pkgs.writeShellScriptBin "rundll32.exe" ''exec /mnt/c/Windows/system32/rundll32.exe "$@"'')
       ];
     };
 }
