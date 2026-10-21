@@ -40,7 +40,10 @@
     {
       packages.neovim = inputs.wrapper-modules.wrappers.neovim.wrap {
         inherit pkgs;
-        package = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        # TODO: switch back to `packages.<system>.default` once fixed; only
+        # `checks` are cached on nix-community.cachix.org.
+        # https://github.com/nix-community/neovim-nightly-overlay/issues/1405
+        package = inputs.neovim-nightly-overlay.checks.${pkgs.stdenv.hostPlatform.system}.neovim;
         # ruby provider drags in ruby + gems (41 MiB); nothing here uses it.
         hosts.ruby.nvim-host.enable = false;
         settings = {
