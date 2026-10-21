@@ -12,29 +12,11 @@
 
   perSystem =
     { pkgs, lib, ... }:
-    let
-      # Track jj main instead of the nixpkgs release.
-      src = pkgs.fetchFromGitHub {
-        owner = "jj-vcs";
-        repo = "jj";
-        rev = "55705c3d65c58bb439786a1545cde83066078b5b";
-        hash = "sha256-R3z7NrZqYybrty6OqhmKVZ/3iemtZ24Clc2ia5ERVJs=";
-      };
-      jujutsu-main = pkgs.jujutsu.overrideAttrs {
-        version = "0.45.1-unstable-2026-09-22";
-        inherit src;
-        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-          inherit src;
-          hash = "sha256-0gKJR6/0CszL3z1oV0Iu3EGB6TaRXyuNHn0Y4C5i6sA=";
-        };
-        # `jj --version` reports the Cargo.toml version, not the -unstable suffix.
-        doInstallCheck = false;
-      };
-    in
     {
       packages.jujutsu = inputs.wrapper-modules.wrappers.jujutsu.wrap {
         inherit pkgs;
-        package = jujutsu-main;
+        # nixpkgs master picks up new jj releases before nixos-unstable does.
+        package = inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.jujutsu;
         settings = {
           user = {
             name = lib.mkDefault "Jan Lafferton";
