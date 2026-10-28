@@ -88,6 +88,10 @@
       "rev": "208e1c5b8170c01fd1d07df0139322a76479b235",
       "src": "https://github.com/rmarganti/sidekick.nvim",
       "version": "'herdr'"
+    },
+    "tuios-nvim-navigator": {
+      "rev": "e52540c34f638f56d0bb31dec0d9556af48250d4",
+      "src": "https://github.com/Tim4c/tuios-nvim-navigator"
     }
   }
 }

@@ -15,8 +15,6 @@
     {
       packages.jujutsu = inputs.wrapper-modules.wrappers.jujutsu.wrap {
         inherit pkgs;
-        # nixpkgs master picks up new jj releases before nixos-unstable does.
-        package = inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.jujutsu;
         settings = {
           user = {
             name = lib.mkDefault "Jan Lafferton";
