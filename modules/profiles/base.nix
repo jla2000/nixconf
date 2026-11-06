@@ -8,6 +8,7 @@
         self.nixosModules.git
         self.nixosModules.jujutsu
         self.nixosModules.neovim
+        self.nixosModules.helix
         self.nixosModules.dev-tools
         self.nixosModules.stylix
         self.nixosModules.tmux
