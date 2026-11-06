@@ -10,10 +10,7 @@
         self.nixosModules.neovim
         self.nixosModules.dev-tools
         self.nixosModules.stylix
-        self.nixosModules.herdr
         self.nixosModules.tmux
-        self.nixosModules.opencode
-        # self.nixosModules.flyline
       ];
 
       options.profile.identity = {
