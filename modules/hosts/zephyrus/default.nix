@@ -42,7 +42,10 @@
       hardware.graphics.enable32Bit = false;
 
       environment.systemPackages = with pkgs; [
+        adwaita-icon-theme
         chromium
+        gnome-themes-extra
+        herdr-desktop
       ];
 
       # The dGPU is bound to vfio-pci in the initrd (see zephyrus-gpu-passthrough),

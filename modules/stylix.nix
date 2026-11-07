@@ -21,6 +21,12 @@
           enable = true;
           base16Scheme = "${pkgs.base16-schemes}/share/themes/${config.stylix.colorscheme}.yaml";
           targets.console.enable = false;
+
+          cursor = {
+            package = pkgs.adwaita-icon-theme;
+            name = "Adwaita";
+            size = 24;
+          };
         };
       };
     };
