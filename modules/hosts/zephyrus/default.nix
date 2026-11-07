@@ -46,6 +46,7 @@
         chromium
         gnome-themes-extra
         herdr-desktop
+        pi-coding-agent
       ];
 
       # The dGPU is bound to vfio-pci in the initrd (see zephyrus-gpu-passthrough),
