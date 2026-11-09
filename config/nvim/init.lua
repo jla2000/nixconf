@@ -20,6 +20,8 @@ vim.o.exrc = true
 
 vim.pack.add({
   "https://github.com/catppuccin/nvim",
+  { src = "https://github.com/rose-pine/neovim", name = "rose-pine" },
+  "https://github.com/folke/tokyonight.nvim",
   "https://github.com/saecki/live-rename.nvim",
   "https://github.com/neovim/nvim-lspconfig",
   "https://github.com/nvim-treesitter/nvim-treesitter",
@@ -42,7 +44,13 @@ vim.pack.add({
   { src = "https://github.com/rmarganti/sidekick.nvim",                     version = "herdr" },
 })
 
-vim.cmd.colorscheme(vim.env.NVIM_COLORSCHEME or "catppuccin")
+require("rose-pine").setup({ styles = { transparency = true } })
+require("tokyonight").setup({
+  transparent = true,
+  styles = { sidebars = "transparent", floats = "transparent" },
+})
+
+vim.cmd.colorscheme("tokyonight")
 
 pcall(function()
   require("vim._core.ui2").enable({})

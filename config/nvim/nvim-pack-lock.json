@@ -84,10 +84,18 @@
       "rev": "640a3ec6d538bad17c328be373c7cad0293d9589",
       "src": "https://github.com/meanderingprogrammer/render-markdown.nvim"
     },
+    "rose-pine": {
+      "rev": "ff483051a47e27d84bdef47703538df1ed9f4a47",
+      "src": "https://github.com/rose-pine/neovim"
+    },
     "sidekick.nvim": {
       "rev": "208e1c5b8170c01fd1d07df0139322a76479b235",
       "src": "https://github.com/rmarganti/sidekick.nvim",
       "version": "'herdr'"
+    },
+    "tokyonight.nvim": {
+      "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
+      "src": "https://github.com/folke/tokyonight.nvim"
     },
     "tuios-nvim-navigator": {
       "rev": "e52540c34f638f56d0bb31dec0d9556af48250d4",

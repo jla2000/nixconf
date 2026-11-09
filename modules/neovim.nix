@@ -27,7 +27,6 @@
             settings.config_directory = config.profile.neovim.configDirectory;
           })
         ];
-        environment.variables.NVIM_COLORSCHEME = config.stylix.colorscheme;
       };
     };
 
