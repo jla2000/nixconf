@@ -63,6 +63,7 @@
         bacon
         jjui
         attic-client
+        jq
 
         # LSP's
         zls

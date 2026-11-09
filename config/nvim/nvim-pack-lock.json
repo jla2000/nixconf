@@ -23,6 +23,10 @@
       "src": "https://github.com/saecki/crates.nvim",
       "version": "'stable'"
     },
+    "diffbandit.nvim": {
+      "rev": "1897aea7a970b49f0687617a16bcea1f53290fbc",
+      "src": "https://github.com/CoreyKaylor/diffbandit.nvim"
+    },
     "fidget.nvim": {
       "rev": "6f793b2bcd2d35e201c09520f698bb763220908a",
       "src": "https://github.com/j-hui/fidget.nvim"
