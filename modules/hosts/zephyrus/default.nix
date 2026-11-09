@@ -18,6 +18,7 @@
       ];
 
       stylix.colorscheme = "catppuccin-mocha";
+      stylix.enable = lib.mkForce false;
 
       profile.neovim.configDirectory = "/home/jan/.config/nvim";
 
@@ -47,6 +48,7 @@
         gnome-themes-extra
         herdr-desktop
         pi-coding-agent
+        claude-code
       ];
 
       # The dGPU is bound to vfio-pci in the initrd (see zephyrus-gpu-passthrough),
