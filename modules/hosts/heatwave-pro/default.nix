@@ -13,7 +13,7 @@ in
   };
 
   flake.nixosModules.heatwave-pro =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     {
       imports = [
         "${nixpkgs-vector}/modules/vector/default.nix"
@@ -32,10 +32,10 @@ in
       networking.hostName = "heatwave-pro";
       vector.proxy-settings.enable = true;
 
+      services.sshd.enable = true;
       programs.ssh.startAgent = true;
       stylix.colorscheme = "catppuccin-mocha";
-      # No Qt apps on WSL; the qt target alone pulls Qt5+Qt6 (~420 MiB).
-      stylix.targets.qt.enable = false;
+      stylix.enable = lib.mkForce false;
 
       environment.systemPackages =
         with pkgs;
@@ -62,6 +62,7 @@ in
           dnsmasq
           glab
           grimoire
+          hunk
           tuios
         ];
 
