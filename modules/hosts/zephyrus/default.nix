@@ -17,8 +17,6 @@
         inputs.nixos-hardware.nixosModules.asus-zephyrus-ga402
       ];
 
-      stylix.colorscheme = "catppuccin-mocha";
-      stylix.enable = lib.mkForce false;
 
       profile.neovim.configDirectory = "/home/jan/.config/nvim";
 

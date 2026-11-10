@@ -13,7 +13,7 @@ in
   };
 
   flake.nixosModules.heatwave-pro =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
     {
       imports = [
         "${nixpkgs-vector}/modules/vector/default.nix"
@@ -34,8 +34,6 @@ in
 
       services.sshd.enable = true;
       programs.ssh.startAgent = true;
-      stylix.colorscheme = "catppuccin-mocha";
-      stylix.enable = lib.mkForce false;
 
       environment.systemPackages =
         with pkgs;
