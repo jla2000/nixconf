@@ -10,7 +10,6 @@
         self.nixosModules.neovim
         self.nixosModules.helix
         self.nixosModules.dev-tools
-        self.nixosModules.tmux
       ];
 
       options.profile.identity = {
