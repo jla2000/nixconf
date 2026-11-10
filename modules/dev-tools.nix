@@ -70,9 +70,7 @@
         nixd
         taplo
         lua-language-server
-        wgsl-analyzer
         lldb
-        glsl_analyzer
 
         # Formatter
         stylua
