@@ -100,10 +100,6 @@
     "tokyonight.nvim": {
       "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
       "src": "https://github.com/folke/tokyonight.nvim"
-    },
-    "tuios-nvim-navigator": {
-      "rev": "e52540c34f638f56d0bb31dec0d9556af48250d4",
-      "src": "https://github.com/Tim4c/tuios-nvim-navigator"
     }
   }
 }
