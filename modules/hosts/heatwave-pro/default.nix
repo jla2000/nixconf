@@ -60,7 +60,6 @@ in
           glab
           grimoire
           hunk
-          tuios
         ];
 
       # Set the suid bit for the qemu-bridge-helper
