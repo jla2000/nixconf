@@ -18,7 +18,6 @@ in
       imports = [
         "${nixpkgs-vector}/modules/vector/default.nix"
         self.nixosModules.base
-        self.nixosModules.alacritty
         self.nixosModules.ghostty
         self.nixosModules.wsl
       ];
