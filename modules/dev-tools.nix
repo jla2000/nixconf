@@ -52,7 +52,6 @@
         tree
         fastfetch
         scc
-        zig
         cargo
         rustc
         rust-analyzer
@@ -66,7 +65,6 @@
         jq
 
         # LSP's
-        zls
         zuban
         clang-tools
         nixd

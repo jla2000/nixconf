@@ -63,7 +63,6 @@
           rust-analyzer
           rustfmt
           taplo
-          zls
         ];
       };
     };

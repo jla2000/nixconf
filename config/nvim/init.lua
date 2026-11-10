@@ -101,7 +101,6 @@ vim.lsp.enable("nixd")
 vim.lsp.enable("clangd")
 vim.lsp.enable("marksman")
 vim.lsp.enable("taplo")
-vim.lsp.enable("zls")
 
 vim.keymap.set("n", "<esc>", "<cmd>nohl<cr><esc>")
 vim.keymap.set("n", "<tab>", "<cmd>bn<cr>")
