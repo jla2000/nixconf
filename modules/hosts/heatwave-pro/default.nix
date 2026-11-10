@@ -52,7 +52,6 @@ in
           };
         in
         [
-          nodejs
           qemu_kvm
           bridge-utils
           unixtools.ifconfig
