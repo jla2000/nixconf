@@ -13,7 +13,7 @@
     {
       packages.helix = inputs.wrapper-modules.wrappers.helix.wrap {
         inherit pkgs;
-        settings.theme = "catppuccin_mocha";
+        settings.theme = "base16_transparent";
       };
     };
 }
