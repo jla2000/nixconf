@@ -50,6 +50,10 @@
         # WSLg has no desktop environment, so nothing else pulls in an icon
         # theme and GTK apps render with blank icons.
         pkgs.adwaita-icon-theme
+        (pkgs.writeShellScriptBin "wsl.exe" ''exec /mnt/c/Windows/system32/wsl.exe "$@"'')
+        (pkgs.writeShellScriptBin "explorer.exe" ''exec /mnt/c/Windows/explorer.exe "$@"'')
+        # xdg-open's WSL branch opens non-file URLs via rundll32.exe.
+        (pkgs.writeShellScriptBin "rundll32.exe" ''exec /mnt/c/Windows/system32/rundll32.exe "$@"'')
       ];
     };
 }
